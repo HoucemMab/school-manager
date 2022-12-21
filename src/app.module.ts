@@ -13,9 +13,11 @@ import { PfeModule } from './pfe/pfe.module';
 import { StageEteModule } from './stage-ete/stage-ete.module';
 import { EvenementModule } from './evenement/evenement.module';
 import { OffreConseilModule } from './offre-conseil/offre-conseil.module';
+import { EtudiantAlumniModule } from './etudiant-alumni/etudiant-alumni.module';
+import { EtudiantActuelModule } from './etudiant-actuel/etudiant-actuel.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(typeOrmConfig), UserModule, EtudiantModule, EnseignantModule, ResponsableModule, AdminModule, PfaModule, PfeModule, StageEteModule, EvenementModule, OffreConseilModule],
+  imports: [TypeOrmModule.forRoot(typeOrmConfig), UserModule, EtudiantModule, EnseignantModule, ResponsableModule, AdminModule, PfaModule, PfeModule, StageEteModule, EvenementModule, OffreConseilModule, EtudiantAlumniModule, EtudiantActuelModule],
   controllers: [AppController],
   providers: [AppService],
 })
