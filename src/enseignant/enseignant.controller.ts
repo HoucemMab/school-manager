@@ -11,10 +11,13 @@ import {
 import { Enseignant } from './enseignant.entity';
 import { EnseignantService } from './enseignant.service';
 import { ChangerMdpEnseignant } from './dtos/changemdp.dto';
+import { AuthGuard } from '@nestjs/passport/dist';
+import { UseGuards } from '@nestjs/common/decorators';
 
 @Controller('enseignant')
 export class EnseignantController {
   constructor(private enseignantService: EnseignantService) {}
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   async getAllEnseignant(): Promise<Enseignant[]> {
     return this.enseignantService.getAllEnseignant();
