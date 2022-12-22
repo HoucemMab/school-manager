@@ -1,35 +1,36 @@
+import { Enseignant } from './../../enseignant/enseignant.entity';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/user/user.entity';
 import { MongoRepository } from 'typeorm';
-import { SingInUserDTO } from './dtos/signinUser.dto';
+import { SingInUserDTO } from '../dtos/signinUser.dto';
 import * as argon from 'argon2';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(User) private userRepository: MongoRepository<User>,
+    @InjectRepository(Enseignant)
+    private enseignantRepository: MongoRepository<Enseignant>,
   ) {}
 
-  async signup(createAuth: User): Promise<User> {
+  async signup(createAuth: Enseignant): Promise<Enseignant> {
     // hash the password
     const hash = await argon.hash(createAuth.mdp);
     // save the new hashed password
     createAuth.mdp = hash;
-    return this.userRepository.save(createAuth);
+    return this.enseignantRepository.save(createAuth);
   }
-  async signIn(signIndto: SingInUserDTO): Promise<User> {
-    const user = await this.userRepository.findOneBy({
+  async signIn(signIndto: SingInUserDTO): Promise<Enseignant> {
+    const enseignant = await this.enseignantRepository.findOneBy({
       login: signIndto.login,
     });
-    if (!user) {
+    if (!enseignant) {
       throw new ForbiddenException('User not Found .. Please Verify !');
     } else {
       // verify the password with the hashed one , argon will convert it
-      const passwordVerify = argon.verify(user.mdp, signIndto.mdp);
+      const passwordVerify = argon.verify(enseignant.mdp, signIndto.mdp);
       //delete the password from the returned object , Security tip
-      delete (await user).mdp;
-      return user;
+      delete (await enseignant).mdp;
+      return enseignant;
     }
   }
 }
