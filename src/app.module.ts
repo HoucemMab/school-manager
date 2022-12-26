@@ -16,10 +16,12 @@ import { OffreConseilModule } from './offre-conseil/offre-conseil.module';
 import { EtudiantAlumniModule } from './etudiant-alumni/etudiant-alumni.module';
 import { EtudiantActuelModule } from './etudiant-actuel/etudiant-actuel.module';
 import { AuthModule } from './auth/enseignantAuth/auth.module';
+import { MailingModule } from './mailing/mailing.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
+
     UserModule,
     EtudiantModule,
     EnseignantModule,
@@ -33,6 +35,7 @@ import { AuthModule } from './auth/enseignantAuth/auth.module';
     EtudiantAlumniModule,
     EtudiantActuelModule,
     AuthModule,
+    MailingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
