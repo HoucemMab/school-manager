@@ -9,4 +9,7 @@ export class User {
 
   @Column()
   mdp: string;
+
+  @Column()
+  email: string;
 }
