@@ -17,6 +17,7 @@ import { EtudiantAlumniModule } from './etudiant-alumni/etudiant-alumni.module';
 import { EtudiantActuelModule } from './etudiant-actuel/etudiant-actuel.module';
 import { AuthModule } from './auth/enseignantAuth/auth.module';
 import { MailingModule } from './mailing/mailing.module';
+import { AssetModule } from './asset/asset.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { MailingModule } from './mailing/mailing.module';
     EtudiantActuelModule,
     AuthModule,
     MailingModule,
+    AssetModule
   ],
   controllers: [AppController],
   providers: [AppService],
