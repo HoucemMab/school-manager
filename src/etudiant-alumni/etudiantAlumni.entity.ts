@@ -1,11 +1,11 @@
-import { Column, Entity, ObjectIdColumn, PrimaryColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { Etudiant } from './../etudiant/etudiant.entity';
 @Entity()
 export class EtudiantAlumni extends Etudiant {
-  @ObjectIdColumn()
-  _id: string;
-  @PrimaryColumn()
-  idEtudiantAlumni: string;
+  @PrimaryGeneratedColumn({
+    name: 'EtudiantAluId',
+  })
+  EtudiantAluId: number;
   @Column()
   dateObtentionDiplome: Date;
   @Column()
