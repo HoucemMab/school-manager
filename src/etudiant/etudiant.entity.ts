@@ -1,8 +1,12 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from 'src/user/user.entity';
 
 @Entity()
 export class Etudiant extends User {
+  @PrimaryGeneratedColumn({
+    name: 'EtudiantId',
+  })
+  EtudiantId: number;
   @Column()
   nom: string;
   @Column()
@@ -13,7 +17,8 @@ export class Etudiant extends User {
   formation: string;
   @Column()
   poste: string;
-
   @Column()
   visibilite: Boolean;
+  @Column()
+  alumni:Boolean;
 }
