@@ -1,3 +1,4 @@
+import { Role } from './../auth/Roles';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from 'src/user/user.entity';
 
@@ -20,5 +21,8 @@ export class Etudiant extends User {
   @Column()
   visibilite: Boolean;
   @Column()
-  alumni:Boolean;
+  alumni: Boolean;
+
+  @Column()
+  roles: Role[];
 }

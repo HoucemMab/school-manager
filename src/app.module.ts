@@ -20,6 +20,8 @@ import { MailingModule } from './mailing/mailing.module';
 import { AssetModule } from './asset/asset.module';
 import { EtudiantAuthModule } from './auth/etudiant-auth/etudiant-auth.module';
 import { ParticipationModule } from './participation/participation.module';
+import { StageModule } from './stage/stage.module';
+
 
 @Module({
   imports: [
@@ -41,6 +43,7 @@ import { ParticipationModule } from './participation/participation.module';
     MailingModule,
     AssetModule,
     EtudiantAuthModule,
+    StageModule,
   ],
   controllers: [AppController],
   providers: [AppService],

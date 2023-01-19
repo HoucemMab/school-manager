@@ -5,6 +5,7 @@ import { MongoRepository } from 'typeorm';
 import { SingInUserDTO } from '../dtos/signinUser.dto';
 import * as argon from 'argon2';
 import { JwtService } from '@nestjs/jwt';
+import { Role } from '../Roles';
 
 @Injectable()
 export class AuthService {
@@ -19,6 +20,7 @@ export class AuthService {
     const hash = await argon.hash(createAuth.mdp);
     // save the new hashed password
     createAuth.mdp = hash;
+    createAuth.roles = [Role.Enseignant];
     return this.enseignantRepository.save(createAuth);
   }
   async signIn(signIndto: SingInUserDTO): Promise<{ access_token: string }> {
@@ -32,16 +34,18 @@ export class AuthService {
       const passwordVerify = argon.verify(enseignant.mdp, signIndto.mdp);
       //delete the password from the returned object , Security tip
 
-      return this.signToken(enseignant.login, enseignant.mdp);
+      return this.signToken(enseignant.login, enseignant.mdp, enseignant.roles);
     }
   }
   async signToken(
     login: Number,
     mdp: string,
+    roles,
   ): Promise<{ access_token: string }> {
     const payload = {
       sub: login,
       mdp,
+      roles,
     };
     const access_token = await this.jwtService.signAsync(payload, {
       secret: 'schoolManager',
