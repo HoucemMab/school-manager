@@ -12,7 +12,7 @@ import { MailingService } from './mailing.service';
         service: 'gmail',
         auth: {
           user: 'pivario1234@gmail.com',
-          pass: 'mot de passe application lehne',
+          pass: 'lxyqgkddfwttjamc',
         },
       },
     }),

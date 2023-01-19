@@ -6,7 +6,6 @@ import { Cron } from '@nestjs/schedule';
 export class MailingService {
   constructor(private mailerService: MailerService) {}
 
-  //@Cron(new Date('October 15, 2023 08:30:00'))
   async sendEmailToAddDiploma(toemail: string, name: String) {
     await this.mailerService.sendMail({
       to: toemail,

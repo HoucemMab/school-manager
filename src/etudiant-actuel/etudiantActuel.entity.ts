@@ -18,8 +18,10 @@ export class EtudiantActuel extends Etudiant {
   anneEtudet: Number;
 
   @Column()
-  pfa:Pfa;
+  pfa: Pfa;
 
   @Column()
-  pfe:Pfe;
+  pfe: Pfe;
+  @Column()
+  dateObtentionDiplome: Date = null;
 }
