@@ -1,3 +1,4 @@
+import { Role } from 'src/auth/Roles';
 import { User } from 'src/user/user.entity';
 import { Column, Entity, ObjectIdColumn, PrimaryColumn } from 'typeorm';
 
@@ -12,6 +13,9 @@ export class Enseignant extends User {
 
   @Column()
   prenom: string;
+
+  @Column()
+  role: Role = Role.Enseignant;
 }
 // il manque idResponsable
 //choisir pfe , il faut que la liste pfe soit complete
