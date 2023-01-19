@@ -5,7 +5,7 @@ export class User {
   @ObjectIdColumn()
   id: String;
   @Column({ unique: true })
-  login: Number;
+  login: number;
 
   @Column()
   mdp: string;

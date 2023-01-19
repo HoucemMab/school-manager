@@ -1,4 +1,4 @@
 export class SingInUserDTO {
-  login: string;
+  login: number;
   mdp: string;
 }

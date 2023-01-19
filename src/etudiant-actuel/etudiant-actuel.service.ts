@@ -55,7 +55,6 @@ export class EtudiantActuelService {
   @Cron(new Date('July 15, 2023 08:30:00'))
   async sendDiplomaMails() {
     const etudiants: EtudiantActuel[] = await this.etudiantrepository.find();
-    const email: String[] = [];
     const etudiantSansDiplome = etudiants.filter(
       (etudiant) => etudiant.dateObtentionDiplome == null,
     );
