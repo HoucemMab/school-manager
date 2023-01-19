@@ -10,6 +10,7 @@ import { EtudiantAlumniModule } from 'src/etudiant-alumni/etudiant-alumni.module
 @Module({
   imports:[TypeOrmModule.forFeature([Etudiant]),EtudiantActuelModule,EtudiantAlumniModule],
   providers: [EtudiantService],
-  controllers: [EtudiantController]
+  controllers: [EtudiantController],
+  exports:[EtudiantService]
 })
 export class EtudiantModule {}

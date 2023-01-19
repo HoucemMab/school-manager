@@ -50,4 +50,5 @@ export class EvenementController {
   ): Promise<Evenement> {
     return this.evenementService.updateEvenement(evenement);
   }
+
 }
