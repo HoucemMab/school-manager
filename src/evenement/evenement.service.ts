@@ -1,6 +1,7 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { EtudiantService } from 'src/etudiant/etudiant.service';
+import { MongoRepository, Repository } from 'typeorm';
 import { UpdateEvenementDto } from './dto/updateEvenement.dto';
 import { Evenement } from './evenement.entity';
 
@@ -8,13 +9,16 @@ import { Evenement } from './evenement.entity';
 export class EvenementService {
     
     constructor(
+        private etudiantService:EtudiantService,
         @InjectRepository(Evenement)
-        private evenementRepository: Repository<Evenement>,
+        private evenementRepository: MongoRepository<Evenement>,
     ) {}
 
     async addEvenement(evenement: Evenement): Promise<Evenement> {
         return this.evenementRepository.save(evenement);
     }
+
+    
 
     async findAll(): Promise<Evenement[]> {
         return this.evenementRepository.find();
@@ -26,7 +30,7 @@ export class EvenementService {
         });
         console.log(evenement, id);
         if (!evenement) {
-          throw new ForbiddenException('Error');
+          throw new ForbiddenException('Event Not Found');
         } else {
           return evenement;
         }
@@ -46,9 +50,10 @@ export class EvenementService {
         const toUpdate: Evenement = await this.evenementRepository.findOneBy({
             idEvenement: updateEvenementDto.idEvenement,
         });
+        console.log(toUpdate)
         if (toUpdate) {
-          toUpdate.nom = updateEvenementDto.nom;
-          toUpdate.dateEvenement = updateEvenementDto.dateEvenement;
+          toUpdate.nom=updateEvenementDto.nom;
+          toUpdate.dateEvenement=updateEvenementDto.dateEvenement;
           return await this.evenementRepository.save(toUpdate);
         } else {
           throw new ForbiddenException('Evenement not found .. !');

@@ -33,4 +33,6 @@ export class EvenementController {
     async updateEvenement(@Body() evenement: UpdateEvenementDto): Promise<Evenement> {
         return this.evenementService.updateEvenement(evenement);
     }
+
+ 
 }
