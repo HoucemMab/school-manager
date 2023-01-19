@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { Etudiant } from 'src/etudiant/etudiant.entity';
 import * as argon from 'argon2';
 import { JwtService } from '@nestjs/jwt';
+import { Role } from '../Roles';
 
 @Injectable()
 export class EtudiantAuthService {
@@ -19,6 +20,7 @@ export class EtudiantAuthService {
   async signUp(etudiant: Etudiant): Promise<Etudiant> {
     const hash = await argon.hash(etudiant.mdp);
     etudiant.mdp = hash;
+    etudiant.roles = [Role.Etudiant];
     return await this.etudiantRepository.save(etudiant);
   }
 
@@ -31,7 +33,7 @@ export class EtudiantAuthService {
     } else {
       const passwordVerify = argon.verify(etudiant.mdp, signInUser.mdp);
       if (passwordVerify) {
-        return this.signToken(etudiant.login, etudiant.mdp);
+        return this.signToken(etudiant.login, etudiant.mdp, etudiant.roles);
       } else {
         throw new ForbiddenException('Invalid credentials ...');
       }
@@ -40,10 +42,12 @@ export class EtudiantAuthService {
   async signToken(
     login: Number,
     mdp: string,
+    roles,
   ): Promise<{ access_token: string }> {
     const payload = {
       sub: login,
       mdp,
+      roles,
     };
     const access_token = await this.jwtService.signAsync(payload, {
       secret: 'schoolManager',

@@ -14,8 +14,8 @@ export class Enseignant extends User {
   @Column()
   prenom: string;
 
-  @Column()
-  role: Role = Role.Enseignant;
+  @Column('string', { default: Role.Enseignant })
+  roles: Role[];
 }
 // il manque idResponsable
 //choisir pfe , il faut que la liste pfe soit complete

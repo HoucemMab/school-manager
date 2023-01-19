@@ -14,13 +14,14 @@ import { EvenementService } from './evenement.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { Roles } from 'src/auth/decorators/roles/roles.decorator';
 import { RolesGuard } from 'src/auth/guards/roles/roles.guard';
+import { Role } from 'src/auth/Roles';
 
 @Controller('evenement')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class EvenementController {
   constructor(private evenementService: EvenementService) {}
 
-  @Roles('admin')
+  @Roles(Role.Admin)
   @Post('/create')
   async addNewEvenement(@Body() evenement: Evenement): Promise<Evenement> {
     return this.evenementService.addEvenement(evenement);
@@ -36,13 +37,13 @@ export class EvenementController {
     console.log(params);
     return this.evenementService.findEvenementById(params.id);
   }
-  @Roles('admin')
+  @Roles(Role.Admin)
   @Delete('/:id')
   async deleteEvenement(@Param() params): Promise<Evenement> {
     return this.evenementService.deleteEvenement(params.id);
   }
 
-  @Roles('admin')
+  @Roles(Role.Admin)
   @Put()
   async updateEvenement(
     @Body() evenement: UpdateEvenementDto,

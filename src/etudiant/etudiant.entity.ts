@@ -24,5 +24,5 @@ export class Etudiant extends User {
   alumni: Boolean;
 
   @Column()
-  role: Role = Role.Etudiant;
+  roles: Role[];
 }

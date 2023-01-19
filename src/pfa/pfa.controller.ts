@@ -14,36 +14,33 @@ import {
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { Roles } from 'src/auth/decorators/roles/roles.decorator';
 import { RolesGuard } from 'src/auth/guards/roles/roles.guard';
+import { Role } from 'src/auth/Roles';
 @Controller()
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class PfaController {
   constructor(private pfaService: PfaService) {}
-
   @Get('pfa')
   async getAllPfa(): Promise<Pfa[]> {
     return this.pfaService.findAllPfa();
   }
-
   @Get('pfa/:id')
   async getPfaById(@Param() params): Promise<Pfa> {
     return await this.pfaService.findPfaById(params.id);
   }
-  @Roles('enseignant')
-  @UseGuards(RolesGuard)
+
   @Post('pfa')
+  @Roles(Role.Enseignant)
   async addPfa(@Body() pfa: Pfa): Promise<Pfa> {
     return this.pfaService.addPfa(pfa);
   }
-  @Roles('enseignant')
-  @UseGuards(RolesGuard)
   @Delete('pfa/:id')
+  @Roles(Role.Enseignant)
   async deletePfa(@Param() params) {
     return await this.pfaService.deletePfaById(params.id);
   }
 
-  @Roles('enseignant')
-  @UseGuards(RolesGuard)
   @Put('pfa')
+  @Roles(Role.Enseignant)
   async updatePfa(@Body() updatePfadto: UpdatePfaDto) {
     return await this.pfaService.updatePfaById(updatePfadto);
   }
