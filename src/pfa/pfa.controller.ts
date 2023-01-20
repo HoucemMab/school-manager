@@ -1,5 +1,5 @@
 import { UseGuards } from '@nestjs/common/decorators';
-import { UpdatePfaDto } from './dtos/updatePfa.dto';
+import { ChoosingPfaDto, UpdatePfaDto } from './dtos/updatePfa.dto';
 import { Pfa } from './pfa.entity';
 import { PfaService } from './pfa.service';
 import {
@@ -18,7 +18,7 @@ import { Role } from 'src/auth/Roles';
 @Controller()
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class PfaController {
-  constructor(private pfaService: PfaService) {}
+  constructor(private pfaService: PfaService) { }
   @Get('pfa')
   async getAllPfa(): Promise<Pfa[]> {
     return this.pfaService.findAllPfa();
@@ -26,6 +26,11 @@ export class PfaController {
   @Get('pfa/:id')
   async getPfaById(@Param() params): Promise<Pfa> {
     return await this.pfaService.findPfaById(params.id);
+  }
+  @Post('choosepfa')
+  async affectencadrant(@Body() toChoose: ChoosingPfaDto) {
+    return await this.pfaService.choosePfa(toChoose.idPfa, toChoose.idEtudiant)
+
   }
 
   @Post('pfa')

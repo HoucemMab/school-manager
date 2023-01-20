@@ -17,4 +17,7 @@ export class Pfa {
 
   @Column()
   nbEtudiants: Number;
+
+  @Column()
+  idEtudiant:string[];
 }

@@ -12,7 +12,10 @@ export class EtudiantAlumniController {
     async getallEtudiantact(): Promise<EtudiantAlumni[]> {
         return this.EtudiantAlumni.get();
     }
-
+    @Get('/stat')
+    async getstats():Promise<any>{
+        return  this.EtudiantAlumni.stats();
+    }
     @Get('/:nom')
     async getEtudiantAlumni(@Param('nom') params:string): Promise<EtudiantAlumni> {
         return await this.EtudiantAlumni.findOne(params);

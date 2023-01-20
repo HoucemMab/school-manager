@@ -1,5 +1,5 @@
 export class EtudiantAlumanitoupdate {
-    id: any;
+    EtudiantAluId: any;
     nom: string;
     prenom: string;
     dateNaissance: string;
@@ -8,7 +8,7 @@ export class EtudiantAlumanitoupdate {
     Visibilite: string;
     mail: string;
     mdp: string;
-    dateObtentionDiplome:Date;
+    dateObtentionDiplome:number;
     dateEmbacuhe:Date;
     vacation:boolean;
     ContratExpert:boolean;
