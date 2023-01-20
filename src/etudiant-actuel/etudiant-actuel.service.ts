@@ -32,11 +32,11 @@ export class EtudiantActuelService {
   }
   async updateOne(EtudiantActuel: Etudianttoupdate) {
     const toUpdate: EtudiantActuel = await this.etudiantrepository.findOneBy({
-      EtudiantActId: EtudiantActuel.id,
+      EtudiantActId: EtudiantActuel.EtudiantActId,
     });
     console.log(toUpdate);
     if (toUpdate) {
-      return await this.etudiantrepository.save(toUpdate);
+      return await this.etudiantrepository.save(EtudiantActuel);
     } else {
       throw new ForbiddenException('Student not found .. !');
     }

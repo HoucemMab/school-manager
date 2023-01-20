@@ -1,5 +1,5 @@
 export class Etudianttoupdate {
-    id: any;
+    EtudiantActId: any;
     nom: string;
     prenom: string;
     niveau: string;

@@ -26,12 +26,12 @@ export class EtudiantAlumniService {
         }
         async updateOne(EtudiantAlumni: EtudiantAlumanitoupdate) {
             const toUpdate: EtudiantAlumni = await this.etudiantrepository.findOneBy({
-                EtudiantAluId: EtudiantAlumni.id,
+                EtudiantAluId: EtudiantAlumni.EtudiantAluId,
             });
             console.log(toUpdate);
             if (toUpdate) {
     
-                return await this.etudiantrepository.save(toUpdate);
+                return await this.etudiantrepository.save(EtudiantAlumni);
             } else {
                 throw new ForbiddenException('Student not found .. !');
             }
@@ -43,4 +43,37 @@ export class EtudiantAlumniService {
             } else {
               throw new ForbiddenException('Error happened');
             }    }
+        async stats(){
+            const all = await this.get();
+            const DateObtention: any = [];
+            var counting = 0;
+
+            const all_etudiants = (await all).reduce((all_etudiants: { [key: string]: any }, item) => {
+                const etudiant = all_etudiants[item.dateObtentionDiplome] || [];
+                etudiant.push(item);
+                all_etudiants[item.dateObtentionDiplome] = etudiant;
+                return all_etudiants;
+            }, {});
+            Object.keys(all_etudiants).map((etudiant) => {
+                counting = 0;
+                const value = all_etudiants[etudiant];
+                value.map((d: any) => {
+                    console.log(etudiant,d.dateObtentionDiplome);
+
+                    if (d.dateObtentionDiplome == etudiant) {
+                        
+                        counting++;
+                    }
+                }),
+                DateObtention.push({
+                        DateObtention: etudiant,
+                        count: counting,
+                    })
+            })
+            console.log(DateObtention);
+            
+
+
+        }
+        
 }

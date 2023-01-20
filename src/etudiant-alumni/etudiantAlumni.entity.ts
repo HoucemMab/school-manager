@@ -5,9 +5,9 @@ export class EtudiantAlumni extends Etudiant {
   @PrimaryGeneratedColumn({
     name: 'EtudiantAluId',
   })
-  EtudiantAluId: number;
+  EtudiantAluId: string;
   @Column()
-  dateObtentionDiplome: Date;
+  dateObtentionDiplome: number;
   @Column()
   dateEmbacuhe: Date;
   @Column()
