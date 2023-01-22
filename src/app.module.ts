@@ -12,7 +12,7 @@ import { PfaModule } from './pfa/pfa.module';
 import { PfeModule } from './pfe/pfe.module';
 import { StageEteModule } from './stage-ete/stage-ete.module';
 import { EvenementModule } from './evenement/evenement.module';
-import { OffreConseilModule } from './offre-conseil/offre-conseil.module';
+import { PublicationModule } from './publication/publication.module';
 import { EtudiantAlumniModule } from './etudiant-alumni/etudiant-alumni.module';
 import { EtudiantActuelModule } from './etudiant-actuel/etudiant-actuel.module';
 import { AuthModule } from './auth/enseignantAuth/auth.module';
@@ -36,7 +36,7 @@ import { StageModule } from './stage/stage.module';
     StageEteModule,
     EvenementModule,
     ParticipationModule,
-    OffreConseilModule,
+    PublicationModule,
     EtudiantAlumniModule,
     EtudiantActuelModule,
     AuthModule,

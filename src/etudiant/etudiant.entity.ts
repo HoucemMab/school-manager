@@ -1,13 +1,14 @@
 import { Role } from './../auth/Roles';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from 'src/user/user.entity';
 
 @Entity()
 export class Etudiant extends User {
-  @PrimaryGeneratedColumn({
+  @PrimaryColumn({
     name: 'EtudiantId',
+    unique : true
   })
-  EtudiantId: number;
+  EtudiantId: string;
   @Column()
   nom: string;
   @Column()

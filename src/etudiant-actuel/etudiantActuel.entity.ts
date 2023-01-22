@@ -1,13 +1,14 @@
 import { Pfa } from 'src/pfa/pfa.entity';
 import { Pfe } from 'src/pfe/pfe.entity';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { Etudiant } from './../etudiant/etudiant.entity';
 @Entity()
 export class EtudiantActuel extends Etudiant {
-  @PrimaryGeneratedColumn({
+  @PrimaryColumn({
     name: 'EtudiantActId',
+    unique : true
   })
-  EtudiantActId: number;
+  EtudiantActId: string;
   @Column()
   niveau: string;
 
