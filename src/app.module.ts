@@ -11,7 +11,7 @@ import { AdminModule } from './admin/admin.module';
 import { PfaModule } from './pfa/pfa.module';
 import { PfeModule } from './pfe/pfe.module';
 import { EvenementModule } from './evenement/evenement.module';
-import { OffreConseilModule } from './offre-conseil/offre-conseil.module';
+import { PublicationModule } from './publication/publication.module';
 import { EtudiantAlumniModule } from './etudiant-alumni/etudiant-alumni.module';
 import { EtudiantActuelModule } from './etudiant-actuel/etudiant-actuel.module';
 import { AuthModule } from './auth/enseignantAuth/auth.module';
@@ -34,7 +34,7 @@ import { ResponsableAuthModule } from './auth/responsable-auth/responsable-auth.
     PfeModule,
     EvenementModule,
     ParticipationModule,
-    OffreConseilModule,
+    PublicationModule,
     EtudiantAlumniModule,
     EtudiantActuelModule,
     AuthModule,

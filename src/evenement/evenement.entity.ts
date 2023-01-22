@@ -6,7 +6,7 @@ export class Evenement {
   @ObjectIdColumn()
   _id: string;
 
-  @PrimaryColumn()
+  @PrimaryColumn({ unique: true })
   idEvenement: string;
 
   @Column()

@@ -7,7 +7,7 @@ import { Column, Entity, ObjectIdColumn, PrimaryColumn } from 'typeorm';
 export class Responsable extends User {
   @ObjectIdColumn()
   _id: string;
-  @PrimaryColumn()
+  @PrimaryColumn({ unique: true })
   idResponsable: string;
 
   @Column()
