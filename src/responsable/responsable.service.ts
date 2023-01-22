@@ -57,7 +57,7 @@ export class ResponsableService {
         }
     }
 
-    async changerMdpEnseignant(
+    async changerMdpResponsable(
         changerMdpResponsable: ChangerMdpResponsable,
       ): Promise<Responsable> {
         const responsable: Responsable = await this.getResponsableById(

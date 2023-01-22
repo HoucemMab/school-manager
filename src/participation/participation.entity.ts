@@ -7,7 +7,7 @@ export class Participation {
   @ObjectIdColumn()
   _id: string;
 
-  @PrimaryColumn()
+  @PrimaryColumn({ unique: true })
   idParticipation: string;
 
   @Column()

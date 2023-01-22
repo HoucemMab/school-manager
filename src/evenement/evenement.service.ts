@@ -9,7 +9,6 @@ import { Evenement } from './evenement.entity';
 export class EvenementService {
     
     constructor(
-        private etudiantService:EtudiantService,
         @InjectRepository(Evenement)
         private evenementRepository: MongoRepository<Evenement>,
     ) {}

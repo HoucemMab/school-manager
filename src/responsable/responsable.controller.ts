@@ -44,6 +44,6 @@ constructor(private responsableService: ResponsableService) {}
 
   @Put('/changepass')
   async changerMdpResponsable(@Body() changerMdpResponsable: ChangerMdpResponsable): Promise<Responsable> {
-    return this.responsableService.changerMdpEnseignant(changerMdpResponsable);
+    return this.responsableService.changerMdpResponsable(changerMdpResponsable);
   }
 }

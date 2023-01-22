@@ -1,7 +1,9 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Etudiant } from 'src/etudiant/etudiant.entity';
+import { EtudiantService } from 'src/etudiant/etudiant.service';
 import { Evenement } from 'src/evenement/evenement.entity';
+import { EvenementService } from 'src/evenement/evenement.service';
 import { MongoRepository, Repository } from 'typeorm';
 import { AddParticipationDto } from './dto/addparticipation.dto';
 import { Valider } from './dto/valider.dto';
@@ -11,6 +13,8 @@ import { Participation } from './participation.entity';
 export class ParticipationService {
 
     constructor(
+        private etudiantService:EtudiantService,
+        private evenementService:EvenementService,
         @InjectRepository(Participation) 
         private participationRepository: Repository<Participation>
     ) {}
@@ -32,10 +36,23 @@ export class ParticipationService {
     }
 
     async addParticipation(participation:Participation): Promise<Participation> {
-        participation.validite=false;
-        const date = new Date();
-        participation.dateParticipation= date;
-        return await this.participationRepository.save(participation);
+        const evenement : Evenement = await this.evenementService.findEvenementById(participation.idEvenement);
+        const etudiant : Etudiant = await this.etudiantService.findOne(participation.idEtudiant);
+        if (!evenement){
+          throw new NotFoundException('Evenement Doesnt Exist');
+        }
+        else{
+
+          if (!etudiant){
+            throw new NotFoundException('Etudiant Doesnt Exist');
+          }
+          else{
+            participation.validite=false;
+            const date = new Date();
+            participation.dateParticipation= date;
+            return await this.participationRepository.save(participation);
+          }
+        }    
     }
 
     async deleteParticipation(id: string): Promise<Participation> {
