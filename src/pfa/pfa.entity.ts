@@ -19,5 +19,5 @@ export class Pfa {
   nbEtudiants: Number;
 
   @Column()
-  idEtudiant:string[];
+  idEtudiant: string[];
 }

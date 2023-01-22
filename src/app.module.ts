@@ -21,6 +21,7 @@ import { EtudiantAuthModule } from './auth/etudiant-auth/etudiant-auth.module';
 import { ParticipationModule } from './participation/participation.module';
 import { StageModule } from './stage/stage.module';
 import { ResponsableAuthModule } from './auth/responsable-auth/responsable-auth.module';
+import { AdminAuthModule } from './auth/admin-auth/admin-auth.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { ResponsableAuthModule } from './auth/responsable-auth/responsable-auth.
     EtudiantAuthModule,
     StageModule,
     ResponsableAuthModule,
+    AdminAuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
