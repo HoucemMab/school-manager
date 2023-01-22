@@ -37,18 +37,18 @@ export class EvenementController {
     console.log(params);
     return this.evenementService.findEvenementById(params.id);
   }
-  @Roles(Role.Admin)
+
   @Delete('/:id')
+  @Roles(Role.Admin)
   async deleteEvenement(@Param() params): Promise<Evenement> {
     return this.evenementService.deleteEvenement(params.id);
   }
 
-  @Roles(Role.Admin)
   @Put()
+  @Roles(Role.Admin)
   async updateEvenement(
     @Body() evenement: UpdateEvenementDto,
   ): Promise<Evenement> {
     return this.evenementService.updateEvenement(evenement);
   }
-
 }

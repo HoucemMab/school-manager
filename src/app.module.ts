@@ -10,7 +10,6 @@ import { ResponsableModule } from './responsable/responsable.module';
 import { AdminModule } from './admin/admin.module';
 import { PfaModule } from './pfa/pfa.module';
 import { PfeModule } from './pfe/pfe.module';
-import { StageEteModule } from './stage-ete/stage-ete.module';
 import { EvenementModule } from './evenement/evenement.module';
 import { OffreConseilModule } from './offre-conseil/offre-conseil.module';
 import { EtudiantAlumniModule } from './etudiant-alumni/etudiant-alumni.module';
@@ -21,7 +20,7 @@ import { AssetModule } from './asset/asset.module';
 import { EtudiantAuthModule } from './auth/etudiant-auth/etudiant-auth.module';
 import { ParticipationModule } from './participation/participation.module';
 import { StageModule } from './stage/stage.module';
-
+import { ResponsableAuthModule } from './auth/responsable-auth/responsable-auth.module';
 
 @Module({
   imports: [
@@ -33,7 +32,6 @@ import { StageModule } from './stage/stage.module';
     AdminModule,
     PfaModule,
     PfeModule,
-    StageEteModule,
     EvenementModule,
     ParticipationModule,
     OffreConseilModule,
@@ -44,6 +42,7 @@ import { StageModule } from './stage/stage.module';
     AssetModule,
     EtudiantAuthModule,
     StageModule,
+    ResponsableAuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

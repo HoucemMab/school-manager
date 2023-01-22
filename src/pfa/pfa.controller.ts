@@ -18,7 +18,7 @@ import { Role } from 'src/auth/Roles';
 @Controller()
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class PfaController {
-  constructor(private pfaService: PfaService) { }
+  constructor(private pfaService: PfaService) {}
   @Get('pfa')
   async getAllPfa(): Promise<Pfa[]> {
     return this.pfaService.findAllPfa();
@@ -28,9 +28,9 @@ export class PfaController {
     return await this.pfaService.findPfaById(params.id);
   }
   @Post('choosepfa')
+  @Roles(Role.Etudiant)
   async affectencadrant(@Body() toChoose: ChoosingPfaDto) {
-    return await this.pfaService.choosePfa(toChoose.idPfa, toChoose.idEtudiant)
-
+    return await this.pfaService.choosePfa(toChoose.idPfa, toChoose.idEtudiant);
   }
 
   @Post('pfa')
