@@ -19,6 +19,10 @@ import { MailingModule } from './mailing/mailing.module';
 import { AssetModule } from './asset/asset.module';
 import { EtudiantAuthModule } from './auth/etudiant-auth/etudiant-auth.module';
 import { ParticipationModule } from './participation/participation.module';
+
+
+import { ResponsableAuthModule } from './auth/responsable-auth/responsable-auth.module';
+import { AdminAuthModule } from './auth/admin-auth/admin-auth.module';
 import { StageModule } from './stage/cv.module';
 
 
@@ -42,6 +46,8 @@ import { StageModule } from './stage/cv.module';
     AssetModule,
     EtudiantAuthModule,
     StageModule,
+    ResponsableAuthModule,
+    AdminAuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
