@@ -24,6 +24,7 @@ import { ParticipationModule } from './participation/participation.module';
 import { ResponsableAuthModule } from './auth/responsable-auth/responsable-auth.module';
 import { AdminAuthModule } from './auth/admin-auth/admin-auth.module';
 import { StageModule } from './stage/cv.module';
+import { StageEteModule } from './stage-ete/stage-ete.module';
 
 
 @Module({
@@ -48,6 +49,7 @@ import { StageModule } from './stage/cv.module';
     StageModule,
     ResponsableAuthModule,
     AdminAuthModule,
+    StageEteModule
   ],
   controllers: [AppController],
   providers: [AppService],

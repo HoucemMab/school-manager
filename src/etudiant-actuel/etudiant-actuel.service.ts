@@ -6,10 +6,10 @@ import { MailingService } from 'src/mailing/mailing.service';
 import { MongoRepository } from 'typeorm';
 import { getManager, Repository } from 'typeorm';
 import { Cron } from '@nestjs/schedule';
-import { StageEte } from 'src/stage-ete/stageEte.entity';
 import { Etudiantacttoupdate } from './etudiantact.dto';
-import { StageEteService } from 'src/stage-ete/stage-ete.service';
 import { Cv } from 'src/stage/entities/cv.entity';
+import { StageEteService } from 'src/stage-ete/stage-ete.service';
+import { StageEte } from 'src/stage-ete/stageEte.entity';
 
 @Injectable()
 export class EtudiantActuelService {
