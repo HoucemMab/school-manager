@@ -13,7 +13,7 @@ export class AssetController {
     constructor(private service: AssetService) {}
 
 
-    @Post('1')
+    @Post('upload')
     @UseInterceptors(
         FileInterceptor('file', {})
     )

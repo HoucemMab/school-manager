@@ -15,7 +15,14 @@ export class EtudiantService {
         private actuelservice: EtudiantActuelService,) { }
 
     async get() {
-        return await this.etudiantrepository.find();
+        const etudiantactuel = await this.actuelservice.get();
+        const etudiantalu = await this.alumniservice.get();
+
+   let all = [...etudiantactuel,...etudiantalu];
+   return all;
+
+
+
     } async findOne(id: any): Promise<Etudiant> {
 
         const etudiantactuel = this.actuelservice.findOne(id);
@@ -40,24 +47,24 @@ export class EtudiantService {
     async insertOne(Etudiant: Etudiant): Promise<Etudiant> {
         return await this.etudiantrepository.save(Etudiant);
     }
-    async updateOne(Etudiant: Etudianttoupdate) {
-        const toUpdate: Etudiant = await this.etudiantrepository.findOneBy({
-            EtudiantId: Etudiant.id,
-        });
-        console.log(toUpdate);
-        if (toUpdate) {
-
-            return await this.etudiantrepository.save(toUpdate);
-        } else {
-            throw new ForbiddenException('Student not found .. !');
-        }
-    }
-    async deleteOne(id: any) {
-        const Etudiant: Etudiant = await this.findOne(id);
-        if (Etudiant) {
-            return this.etudiantrepository.delete({ EtudiantId: id });
-        } else {
-            throw new ForbiddenException('Error happened');
-        }
-    }
+    /* async updateOne(Etudiant: Etudianttoupdate) {
+         const toUpdate: Etudiant = await this.etudiantrepository.findOneBy({
+             EtudiantId: Etudiant.id,
+         });
+         console.log(toUpdate);
+         if (toUpdate) {
+ 
+             return await this.etudiantrepository.save(toUpdate);
+         } else {
+             throw new ForbiddenException('Student not found .. !');
+         }
+     }
+     async deleteOne(id: any) {
+         const Etudiant: Etudiant = await this.findOne(id);
+         if (Etudiant) {
+             return this.etudiantrepository.delete({ EtudiantId: id });
+         } else {
+             throw new ForbiddenException('Error happened');
+         }
+     }*/
 }

@@ -1,6 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { StageEte } from 'src/stage-ete/stageEte.entity';
+import { Cv } from 'src/stage/entities/cv.entity';
 import { EtudiantActuelService } from './etudiant-actuel.service';
-import { Etudianttoupdate } from './etudiantact.dto';
+import { Etudiantacttoupdate } from './etudiantact.dto';
 import { EtudiantActuel } from './etudiantActuel.entity';
 
 @Controller('etudiant-actuel')
@@ -13,21 +15,28 @@ export class EtudiantActuelController {
         return this.etudiantactuel.get();
     }
 
-    @Get('/:nom')
-    async getEtudiantActuel(@Param('nom') params:string): Promise<EtudiantActuel> {
+    @Get('/:id')
+    async getEtudiantActuel(@Param('id') params:string): Promise<EtudiantActuel> {
         return await this.etudiantactuel.findOne(params);
     }
-    @Post('/inserting')
+    @Post('/insert')
     async addEdutact(@Body() EtudiantActuel: EtudiantActuel): Promise<EtudiantActuel> {
         return this.etudiantactuel.insertOne(EtudiantActuel);
     }
-    @Delete('/:id')
-    async deleteEtudact(@Param() params) {
-        return await this.etudiantactuel.deleteOne(params.id);
+    @Post('/addstage/:id')
+    async addstage(@Param('id') id:string,@Body() stage:StageEte ){
+        return this.etudiantactuel.addstage(id,stage);
     }
-
-    @Put('update')
-    async updateEtudact(@Body() updatestudent: Etudianttoupdate) {
+    @Post('/updateCv/:id')
+    async addCv(@Param('id') id:string,@Body() cv:Cv){
+        return await this.etudiantactuel.updatecv(id,cv)
+    }
+    @Delete('/:id')
+    async deleteEtudact(@Param() params:string) {
+        return await this.etudiantactuel.deleteOne(params);
+    }
+    @Put('/update')
+    async updateEtudact(@Body() updatestudent: Etudiantacttoupdate) {
         return await this.etudiantactuel.updateOne(updatestudent);
     }
 }

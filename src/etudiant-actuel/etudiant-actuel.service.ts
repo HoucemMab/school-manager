@@ -5,8 +5,11 @@ import { Etudiant } from 'src/etudiant/etudiant.entity';
 import { MailingService } from 'src/mailing/mailing.service';
 import { MongoRepository } from 'typeorm';
 import { getManager, Repository } from 'typeorm';
-import { Etudianttoupdate } from './etudiantact.dto';
 import { Cron } from '@nestjs/schedule';
+import { StageEte } from 'src/stage-ete/stageEte.entity';
+import { Etudiantacttoupdate } from './etudiantact.dto';
+import { StageEteService } from 'src/stage-ete/stage-ete.service';
+import { Cv } from 'src/stage/entities/cv.entity';
 
 @Injectable()
 export class EtudiantActuelService {
@@ -14,13 +17,14 @@ export class EtudiantActuelService {
     private mailingService: MailingService,
     @InjectRepository(EtudiantActuel)
     private etudiantrepository: Repository<EtudiantActuel>,
-  ) {}
+    private stageEteService:StageEteService
+  ) { }
   async get() {
     return await this.etudiantrepository.find();
   }
-  async findOne(nom: any): Promise<EtudiantActuel> {
+  async findOne(id: string): Promise<EtudiantActuel> {
     const etudiant = this.etudiantrepository.findOneBy({
-      EtudiantActId: nom,
+      EtudiantActId: id,
     });
     if (!etudiant) {
       throw new ForbiddenException('Not found');
@@ -30,13 +34,32 @@ export class EtudiantActuelService {
   async insertOne(EtudiantActuel: EtudiantActuel): Promise<EtudiantActuel> {
     return await this.etudiantrepository.save(EtudiantActuel);
   }
-  async updateOne(EtudiantActuel: Etudianttoupdate) {
+  async updateOne(EtudiantActuel: Etudiantacttoupdate) {
     const toUpdate: EtudiantActuel = await this.etudiantrepository.findOneBy({
       EtudiantActId: EtudiantActuel.EtudiantActId,
     });
     console.log(toUpdate);
     if (toUpdate) {
-      return await this.etudiantrepository.save(EtudiantActuel);
+      toUpdate.dateNaissance = EtudiantActuel.dateNaissance;
+      toUpdate.nom = EtudiantActuel.nom;
+      toUpdate.prenom = EtudiantActuel.prenom;
+      toUpdate.pfa = EtudiantActuel.pfa;
+      toUpdate.pfe = EtudiantActuel.pfe;
+      toUpdate.login = EtudiantActuel.login;
+      toUpdate.Classe = EtudiantActuel.Classe;
+      toUpdate.stages = EtudiantActuel.stages;
+      toUpdate.formation = EtudiantActuel.formation;
+      toUpdate.email = EtudiantActuel.email;
+      toUpdate.mdp = EtudiantActuel.mdp;
+      toUpdate.poste = EtudiantActuel.poste;
+      toUpdate.niveau=EtudiantActuel.niveau;
+      toUpdate.visibilite = EtudiantActuel.visibilite;
+      toUpdate.anneEtudet = EtudiantActuel.anneEtudet;
+    
+
+
+
+      return await this.etudiantrepository.save(toUpdate);
     } else {
       throw new ForbiddenException('Student not found .. !');
     }
@@ -49,6 +72,31 @@ export class EtudiantActuelService {
       throw new ForbiddenException('Error happened');
     }
   }
+  async addstage(id: string, stage: StageEte) {
+    const etudiant = await this.findOne(id);
+    if (!etudiant) {
+      throw new Error("Verify student Id");
+    } else if (etudiant) {
+      etudiant.stages.push(stage);
+      this.stageEteService.addStageEte(stage);
+      //(await etudiant).login=1234512345;
+      return this.updateOne(etudiant);
+
+    }
+
+  }
+  async updatecv(id:string,cv:Cv){
+    const etudiant = await this.findOne(id);
+    if(etudiant){
+        etudiant.cv.Competences=cv.Competences;
+        etudiant.cv.experience=cv.experience;
+        etudiant.cv.formation=cv.formation;
+        return await this.updateOne(etudiant);
+    }else{
+        throw new ForbiddenException("Wrong Student Id ")
+    }
+
+}
   //Partie Mailling , A ne pas modifier
 
   @Cron(new Date('October 15, 2023 08:30:00'))
