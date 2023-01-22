@@ -8,7 +8,7 @@ export class EtudiantAlumni extends Etudiant {
   })
   EtudiantAluId: string;
   @Column()
-  dateObtentionDiplome: number;
+  dateObtentionDiplome: Date;
   @Column()
   dateEmbacuhe: Date;
   @Column()

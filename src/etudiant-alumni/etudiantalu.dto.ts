@@ -1,15 +1,18 @@
+import { Cv } from "src/stage/entities/cv.entity";
+
 export class EtudiantAlumanitoupdate {
     EtudiantAluId: any;
     nom: string;
     prenom: string;
-    dateNaissance: string;
+    dateNaissance: Date;
     formation: string;
     poste: string;
-    Visibilite: string;
-    mail: string;
+    visibilite: Boolean;
+    email: string;
     mdp: string;
-    dateObtentionDiplome:number;
+    dateObtentionDiplome:Date;
     dateEmbacuhe:Date;
-    vacation:boolean;
-    ContratExpert:boolean;
+    vacation:Boolean;
+    ContratExpert:Boolean;
+    cv:Cv;
 }
