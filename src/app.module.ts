@@ -10,7 +10,6 @@ import { ResponsableModule } from './responsable/responsable.module';
 import { AdminModule } from './admin/admin.module';
 import { PfaModule } from './pfa/pfa.module';
 import { PfeModule } from './pfe/pfe.module';
-import { StageEteModule } from './stage-ete/stage-ete.module';
 import { EvenementModule } from './evenement/evenement.module';
 import { PublicationModule } from './publication/publication.module';
 import { EtudiantAlumniModule } from './etudiant-alumni/etudiant-alumni.module';
@@ -33,7 +32,6 @@ import { StageModule } from './stage/cv.module';
     AdminModule,
     PfaModule,
     PfeModule,
-    StageEteModule,
     EvenementModule,
     ParticipationModule,
     PublicationModule,
