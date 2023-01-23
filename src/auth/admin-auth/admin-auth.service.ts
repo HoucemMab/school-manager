@@ -34,7 +34,7 @@ export class AdminAuthService {
     if (!user) {
       throw new NotFoundException('User Not found ... ! ');
     } else {
-      const passwordVerify = argon.verify(singInUserdto.mdp, user.mdp);
+      const passwordVerify = argon.verify(user.mdp, singInUserdto.mdp);
       if (!passwordVerify) {
         throw new ForbiddenException('Invalid Credentials ... ! ');
       } else {
