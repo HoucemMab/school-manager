@@ -33,17 +33,17 @@ export class ResponsableAuthService {
       if (!passwordVerify) {
         throw new ForbiddenException('Wrong Credentials...!');
       } else {
-        return this.signToken(user.login, user.mdp, user.roles);
+        return this.signToken(user.idResponsable, user.mdp, user.roles);
       }
     }
   }
   async signToken(
-    login: Number,
+    id: string,
     mdp: string,
     roles,
   ): Promise<{ access_token: string }> {
     const payload = {
-      sub: login,
+      sub: id,
       mdp,
       roles,
     };

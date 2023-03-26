@@ -46,8 +46,14 @@ export class EnseignantService {
     );
     if (!enseignant) {
       throw new ForbiddenException('Enseignant Not Found');
+    }else {
+      const isPasswordCorrect = await argon.verify(enseignant.mdp, changerMdpEnseignant.oldmdp);
+      if (!isPasswordCorrect) {
+      throw new ForbiddenException('Current password is incorrect');
+      } else{
+      enseignant.mdp = await argon.hash(changerMdpEnseignant.mdp);
+      }  
     }
-    enseignant.mdp = await argon.hash(changerMdpEnseignant.mdp);
     return this.enseignantRepository.save(enseignant);
   }
 }

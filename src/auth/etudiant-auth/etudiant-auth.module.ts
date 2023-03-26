@@ -6,9 +6,10 @@ import { etudiantAuthController } from './etudiantAuth.controller';
 import { JwtStrategy } from '../strategy/jwt.strategy';
 import { EtudiantAuthService } from './etudiantAuth.service';
 import { Etudiant } from 'src/etudiant/etudiant.entity';
+import { EtudiantAlumni } from 'src/etudiant-alumni/etudiantAlumni.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Etudiant]), JwtModule.register({})],
+  imports: [TypeOrmModule.forFeature([Etudiant, EtudiantActuel, EtudiantAlumni]), JwtModule.register({})],
   controllers: [etudiantAuthController],
   providers: [EtudiantAuthService, JwtStrategy],
 })

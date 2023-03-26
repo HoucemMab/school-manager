@@ -75,8 +75,14 @@ export class ResponsableService {
     );
     if (!responsable) {
       throw new ForbiddenException('Responsable Not Found');
+    } else {
+      const isPasswordCorrect = await argon.verify(responsable.mdp, changerMdpResponsable.oldmdp);
+      if (!isPasswordCorrect) {
+      throw new ForbiddenException('Current password is incorrect');
+      } else{
+      responsable.mdp = await argon.hash(changerMdpResponsable.mdp);
+      }  
     }
-    responsable.mdp = await argon.hash(changerMdpResponsable.mdp);
     return this.responsableRepository.save(responsable);
   }
 }
