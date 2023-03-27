@@ -8,7 +8,6 @@ export class UpdateEvenementDto {
 
     dateEvenement: Date;
 
-    description: string;
-
+    description:string;
 
 }
