@@ -23,9 +23,10 @@ export class EtudiantActuelService {
     return await this.etudiantrepository.find();
   }
   async findOne(id: string): Promise<EtudiantActuel> {
-    const etudiant = this.etudiantrepository.findOneBy({
+    const etudiant = await this.etudiantrepository.findOneBy({
       EtudiantActId: id,
     });
+    console.log("from find ",etudiant)
     if (!etudiant) {
       throw new ForbiddenException('Not found');
     }
@@ -65,12 +66,13 @@ export class EtudiantActuelService {
     }
   }
   async deleteOne(id: any) {
-    const Etudiant: EtudiantActuel = await this.findOne(id);
-    if (Etudiant) {
+     const Etudiant: EtudiantActuel = await this.findOne(id);
+     
+     if (Etudiant) {
       return this.etudiantrepository.delete({ EtudiantActId: id });
     } else {
       throw new ForbiddenException('Error happened');
-    }
+     }
   }
   async addstage(id: string, stage: StageEte) {
     const etudiant = await this.findOne(id);

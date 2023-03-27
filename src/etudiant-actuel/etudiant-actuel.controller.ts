@@ -32,7 +32,7 @@ export class EtudiantActuelController {
         return await this.etudiantactuel.updatecv(id,cv)
     }
     @Delete('/:id')
-    async deleteEtudact(@Param() params:string) {
+    async deleteEtudact(@Param('id') params:string) {
         return await this.etudiantactuel.deleteOne(params);
     }
     @Put('/update')
