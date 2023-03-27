@@ -53,6 +53,7 @@ export class EvenementService {
         if (toUpdate) {
           toUpdate.nom=updateEvenementDto.nom;
           toUpdate.dateEvenement=updateEvenementDto.dateEvenement;
+          toUpdate.description=updateEvenementDto.description;
           return await this.evenementRepository.save(toUpdate);
         } else {
           throw new ForbiddenException('Evenement not found .. !');

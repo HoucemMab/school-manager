@@ -8,9 +8,13 @@ import { SingInUserDTO } from '../dtos/signinUser.dto';
 @Controller('/etudiant/auth')
 export class etudiantAuthController {
   constructor(private etudiantAuthService: EtudiantAuthService) {}
-  @Post('/signup')
-  async signUp(@Body() etudiant: Etudiant): Promise<Etudiant> {
-    return await this.etudiantAuthService.signUp(etudiant);
+  @Post('/signup/alumni')
+  async signUpAlu(@Body() etudiant: Etudiant): Promise<Etudiant> {
+    return await this.etudiantAuthService.signUp(etudiant,'alumni');
+  }
+  @Post('/signup/actuel')
+  async signUpAct(@Body() etudiant: Etudiant): Promise<Etudiant> {
+    return await this.etudiantAuthService.signUp(etudiant,'actuel');
   }
   @Post('/signin')
   async signIn(@Body() userDto: SingInUserDTO) {

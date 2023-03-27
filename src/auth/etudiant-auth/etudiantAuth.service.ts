@@ -8,44 +8,67 @@ import { Etudiant } from 'src/etudiant/etudiant.entity';
 import * as argon from 'argon2';
 import { JwtService } from '@nestjs/jwt';
 import { Role } from '../Roles';
+import { EtudiantAlumni } from 'src/etudiant-alumni/etudiantAlumni.entity';
 
 @Injectable()
 export class EtudiantAuthService {
   constructor(
+    @InjectRepository(EtudiantAlumni)
+    private etudiantAlumniRepository: Repository<EtudiantAlumni>,
+    @InjectRepository(EtudiantActuel)
+    private etudiantActuelRepository: Repository<EtudiantActuel>,
     @InjectRepository(Etudiant)
     private etudiantRepository: Repository<Etudiant>,
     private jwtService: JwtService,
   ) {}
 
-  async signUp(etudiant: Etudiant): Promise<Etudiant> {
+  async signUp(etudiant: Etudiant , userType: string): Promise<Etudiant> {
     const hash = await argon.hash(etudiant.mdp);
     etudiant.mdp = hash;
     etudiant.roles = [Role.Etudiant];
-    return await this.etudiantRepository.save(etudiant);
+    if (userType === 'actuel') {
+      return await this.etudiantActuelRepository.save(etudiant as EtudiantActuel);
+    } else if (userType === 'alumni') {
+      return await this.etudiantAlumniRepository.save(etudiant as EtudiantAlumni);
+    } else {
+      throw new Error('Invalid user type');
+    }
   }
 
   async signIn(signInUser: SingInUserDTO): Promise<{ access_token: string }> {
-    const etudiant: Etudiant = await this.etudiantRepository.findOneBy({
+    const etudiant: EtudiantAlumni = await this.etudiantAlumniRepository.findOneBy({
       login: signInUser.login,
     });
     if (!etudiant) {
-      throw new ForbiddenException('User is not Found !');
+      const etudiant: EtudiantActuel = await this.etudiantActuelRepository.findOneBy({
+        login: signInUser.login,
+      });
+      if (!etudiant){
+        throw new ForbiddenException('Etudiant not found');
+      }else{
+        const passwordVerify = await argon.verify(etudiant.mdp, signInUser.mdp);
+        if (passwordVerify) {   
+          return this.signToken(etudiant.EtudiantActId, etudiant.mdp, etudiant.roles);
+        } else {
+          throw new ForbiddenException('Invalid credentials ...');
+        }
+      }
     } else {
-      const passwordVerify = argon.verify(etudiant.mdp, signInUser.mdp);
+      const passwordVerify = await argon.verify(etudiant.mdp, signInUser.mdp);
       if (passwordVerify) {
-        return this.signToken(etudiant.login, etudiant.mdp, etudiant.roles);
+        return this.signToken(etudiant.EtudiantAluId, etudiant.mdp, etudiant.roles);
       } else {
         throw new ForbiddenException('Invalid credentials ...');
       }
     }
   }
   async signToken(
-    login: Number,
+    id: string,
     mdp: string,
     roles,
   ): Promise<{ access_token: string }> {
     const payload = {
-      sub: login,
+      sub: id,
       mdp,
       roles,
     };

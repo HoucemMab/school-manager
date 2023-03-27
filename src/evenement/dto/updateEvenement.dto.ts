@@ -1,6 +1,6 @@
 
 export class UpdateEvenementDto {
-   
+
 
     idEvenement: string;
 
@@ -8,5 +8,6 @@ export class UpdateEvenementDto {
 
     dateEvenement: Date;
 
+    description:string;
 
 }

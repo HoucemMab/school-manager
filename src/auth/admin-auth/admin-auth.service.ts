@@ -32,23 +32,23 @@ export class AdminAuthService {
       login: singInUserdto.login,
     });
     if (!user) {
-      throw new NotFoundException('User Not found ... ! ');
+      throw new NotFoundException('Admin Not found ... ! ');
     } else {
-      const passwordVerify = argon.verify(user.mdp, singInUserdto.mdp);
+      const passwordVerify = await argon.verify(user.mdp, singInUserdto.mdp);
       if (!passwordVerify) {
         throw new ForbiddenException('Invalid Credentials ... ! ');
       } else {
-        return this.signToken(user.login, user.mdp, user.roles);
+        return this.signToken(user.idAdmin, user.mdp, user.roles);
       }
     }
   }
   async signToken(
-    login: Number,
+    id: String,
     mdp: string,
     roles,
   ): Promise<{ access_token: string }> {
     const payload = {
-      sub: login,
+      sub: id,
       mdp,
       roles,
     };
