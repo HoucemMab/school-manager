@@ -13,6 +13,7 @@ import { EnseignantService } from './enseignant.service';
 import { ChangerMdpEnseignant } from './dtos/changemdp.dto';
 import { AuthGuard } from '@nestjs/passport/dist';
 import { UseGuards } from '@nestjs/common/decorators';
+import { UpdateEnseignantDto } from './dtos/updateEnseignant.dto';
 
 @Controller('enseignant')
 export class EnseignantController {
@@ -34,6 +35,11 @@ export class EnseignantController {
   }
 
   @Put()
+  async updateEnseignant(@Body() enseignant: UpdateEnseignantDto): Promise<Enseignant> {
+    return this.enseignantService.updateEnseignant(enseignant);
+  }
+
+  @Put('/changepass')
   async changerMdpEnseignant(
     @Body() changerMdpEnseignant: ChangerMdpEnseignant,
   ): Promise<Enseignant> {

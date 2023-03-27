@@ -4,6 +4,7 @@ import { Enseignant } from './enseignant.entity';
 import { Injectable, ForbiddenException } from '@nestjs/common';
 import { MongoRepository, DeleteResult } from 'typeorm';
 import * as argon from 'argon2';
+import { UpdateEnseignantDto } from './dtos/updateEnseignant.dto';
 
 @Injectable()
 export class EnseignantService {
@@ -56,6 +57,25 @@ export class EnseignantService {
     }
     return this.enseignantRepository.save(enseignant);
   }
+
+  async updateEnseignant(
+    updateEnseignantDto: UpdateEnseignantDto,
+  ): Promise<Enseignant> {
+    const toUpdate: Enseignant = await this.enseignantRepository.findOneBy({
+      idEnseignant: updateEnseignantDto.idEnseignant,
+    });
+    if (toUpdate) {
+      toUpdate.nom = updateEnseignantDto.nom;
+      toUpdate.prenom = updateEnseignantDto.prenom;
+      toUpdate.email = updateEnseignantDto.email;
+      return await this.enseignantRepository.save(toUpdate);
+    } else {
+      throw new ForbiddenException('Enseignant not found .. !');
+    }
+  }
+
 }
+
+
 // Il manque voir cv etudiants
 // Voir et choisir pfe

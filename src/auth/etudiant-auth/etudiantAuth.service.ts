@@ -1,7 +1,7 @@
 import { JwtStrategy } from './../strategy/jwt.strategy';
 import { SingInUserDTO } from './../dtos/signinUser.dto';
 import { EtudiantActuel } from 'src/etudiant-actuel/etudiantActuel.entity';
-import { Injectable, ForbiddenException } from '@nestjs/common';
+import { Injectable, ForbiddenException, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Etudiant } from 'src/etudiant/etudiant.entity';
@@ -29,7 +29,15 @@ export class EtudiantAuthService {
     if (userType === 'actuel') {
       return await this.etudiantActuelRepository.save(etudiant as EtudiantActuel);
     } else if (userType === 'alumni') {
-      return await this.etudiantAlumniRepository.save(etudiant as EtudiantAlumni);
+      
+      try {
+        return await this.etudiantAlumniRepository.save(etudiant as EtudiantAlumni);
+      } catch (error) {
+        console.log(error.message);
+        throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+        
+    }
+      
     } else {
       throw new Error('Invalid user type');
     }
