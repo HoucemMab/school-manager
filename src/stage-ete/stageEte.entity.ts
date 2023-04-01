@@ -1,17 +1,24 @@
-import { Column, Entity, ObjectIdColumn, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Generated,
+  ObjectIdColumn,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class StageEte {
   @ObjectIdColumn()
-  _id:string;
-  @PrimaryColumn()
+  _id: string;
+  @PrimaryGeneratedColumn()
   idStage: number;
   @Column()
   sujet: string;
   @Column()
-  dateDebut:Date;
+  dateDebut: Date;
   @Column()
-  dateFin:Date;
+  dateFin: Date;
   @Column()
-  societe:string;
+  societe: string;
 }

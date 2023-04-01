@@ -6,12 +6,17 @@ import { EtudiantActuelService } from './etudiant-actuel.service';
 import { MailingModule } from 'src/mailing/mailing.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StageEteModule } from 'src/stage-ete/stage-ete.module';
+import { PfeModule } from 'src/pfe/pfe.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([EtudiantActuel]), MailingModule , StageEteModule],
+  imports: [
+    TypeOrmModule.forFeature([EtudiantActuel]),
+    MailingModule,
+    StageEteModule,
+    PfeModule,
+  ],
   controllers: [EtudiantActuelController],
   providers: [EtudiantActuelService],
-  exports:[EtudiantActuelService]
-
+  exports: [EtudiantActuelService],
 })
 export class EtudiantActuelModule {}

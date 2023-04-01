@@ -1,5 +1,10 @@
+import { PfeService } from './../pfe/pfe.service';
 import { EtudiantActuel } from './etudiantActuel.entity';
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Etudiant } from 'src/etudiant/etudiant.entity';
 import { MailingService } from 'src/mailing/mailing.service';
@@ -10,6 +15,8 @@ import { Etudiantacttoupdate } from './etudiantact.dto';
 import { Cv } from 'src/stage/entities/cv.entity';
 import { StageEteService } from 'src/stage-ete/stage-ete.service';
 import { StageEte } from 'src/stage-ete/stageEte.entity';
+import * as argon from 'argon2';
+import { Pfe } from 'src/pfe/pfe.entity';
 
 @Injectable()
 export class EtudiantActuelService {
@@ -17,8 +24,9 @@ export class EtudiantActuelService {
     private mailingService: MailingService,
     @InjectRepository(EtudiantActuel)
     private etudiantrepository: Repository<EtudiantActuel>,
-    private stageEteService:StageEteService
-  ) { }
+    private stageEteService: StageEteService,
+    private pfeService: PfeService,
+  ) {}
   async get() {
     return await this.etudiantrepository.find();
   }
@@ -26,13 +34,15 @@ export class EtudiantActuelService {
     const etudiant = await this.etudiantrepository.findOneBy({
       EtudiantActId: id,
     });
-    console.log("from find ",etudiant)
+    console.log('from find ', etudiant);
     if (!etudiant) {
       throw new ForbiddenException('Not found');
     }
     return etudiant;
   }
   async insertOne(EtudiantActuel: EtudiantActuel): Promise<EtudiantActuel> {
+    const hash = await argon.hash(EtudiantActuel.mdp);
+    EtudiantActuel.mdp = hash;
     return await this.etudiantrepository.save(EtudiantActuel);
   }
   async updateOne(EtudiantActuel: Etudiantacttoupdate) {
@@ -53,12 +63,9 @@ export class EtudiantActuelService {
       toUpdate.email = EtudiantActuel.email;
       toUpdate.mdp = EtudiantActuel.mdp;
       toUpdate.poste = EtudiantActuel.poste;
-      toUpdate.niveau=EtudiantActuel.niveau;
+      toUpdate.niveau = EtudiantActuel.niveau;
       toUpdate.visibilite = EtudiantActuel.visibilite;
       toUpdate.anneEtudet = EtudiantActuel.anneEtudet;
-    
-
-
 
       return await this.etudiantrepository.save(toUpdate);
     } else {
@@ -66,39 +73,60 @@ export class EtudiantActuelService {
     }
   }
   async deleteOne(id: any) {
-     const Etudiant: EtudiantActuel = await this.findOne(id);
-     
-     if (Etudiant) {
+    const Etudiant: EtudiantActuel = await this.findOne(id);
+
+    if (Etudiant) {
       return this.etudiantrepository.delete({ EtudiantActId: id });
     } else {
       throw new ForbiddenException('Error happened');
-     }
+    }
   }
   async addstage(id: string, stage: StageEte) {
     const etudiant = await this.findOne(id);
     if (!etudiant) {
-      throw new Error("Verify student Id");
+      throw new Error('Verify student Id');
     } else if (etudiant) {
-      etudiant.stages.push(stage);
-      this.stageEteService.addStageEte(stage);
+      const stageCreated = await this.stageEteService.addStageEte(stage);
+      console.log(stageCreated);
+      if (stageCreated) {
+        etudiant.stages.push(stageCreated);
+      } else {
+        throw new BadRequestException('Cannot Create Stage');
+      }
+
       //(await etudiant).login=1234512345;
       return this.updateOne(etudiant);
-
     }
-
   }
-  async updatecv(id:string,cv:Cv){
-    const etudiant = await this.findOne(id);
-    if(etudiant){
-        etudiant.cv.Competences=cv.Competences;
-        etudiant.cv.experience=cv.experience;
-        etudiant.cv.formation=cv.formation;
-        return await this.updateOne(etudiant);
-    }else{
-        throw new ForbiddenException("Wrong Student Id ")
-    }
 
-}
+  async addPFE(id: string, stage: Pfe) {
+    const etudiant = await this.findOne(id);
+    if (!etudiant) {
+      throw new Error('Verify student Id');
+    } else if (etudiant) {
+      const stageCreated = await this.pfeService.addPfe(stage);
+      console.log(stageCreated);
+      if (stageCreated) {
+        etudiant.pfe = stageCreated;
+      } else {
+        throw new BadRequestException('Cannot Create PFE');
+      }
+
+      //(await etudiant).login=1234512345;
+      return this.updateOne(etudiant);
+    }
+  }
+  async updatecv(id: string, cv: Cv) {
+    const etudiant = await this.findOne(id);
+    if (etudiant) {
+      etudiant.cv.Competences = cv.Competences;
+      etudiant.cv.experience = cv.experience;
+      etudiant.cv.formation = cv.formation;
+      return await this.updateOne(etudiant);
+    } else {
+      throw new ForbiddenException('Wrong Student Id ');
+    }
+  }
   //Partie Mailling , A ne pas modifier
 
   @Cron(new Date('October 15, 2023 08:30:00'))

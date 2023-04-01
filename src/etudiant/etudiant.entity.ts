@@ -5,7 +5,7 @@ import { Cv } from 'src/stage/entities/cv.entity';
 
 @Entity()
 export class Etudiant extends User {
- /* @PrimaryColumn({
+  /* @PrimaryColumn({
     name: 'EtudiantId',
     unique: true
   })
@@ -20,13 +20,13 @@ export class Etudiant extends User {
   formation: string;
   @Column()
   poste: string;
-  @Column({nullable:true})
+  @Column({ nullable: true })
   visibilite: Boolean;
   @Column()
-  cv:Cv;
+  cv: Cv;
   // @Column()
   //alumni: Boolean;
 
   @Column()
-  roles: Role[];
+  roles: Role[] = [Role.Etudiant];
 }

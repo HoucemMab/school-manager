@@ -1,7 +1,13 @@
 import { Pfa } from 'src/pfa/pfa.entity';
 import { Pfe } from 'src/pfe/pfe.entity';
 import { StageEte } from 'src/stage-ete/stageEte.entity';
-import { Column, Entity, ObjectIdColumn, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ObjectIdColumn,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Etudiant } from './../etudiant/etudiant.entity';
 @Entity()
 export class EtudiantActuel extends Etudiant {
@@ -9,7 +15,7 @@ export class EtudiantActuel extends Etudiant {
   _id: string;
   @PrimaryColumn({
     name: 'EtudiantActId',
-    unique: true
+    unique: true,
   })
   EtudiantActId: string;
   @Column()
@@ -25,6 +31,5 @@ export class EtudiantActuel extends Etudiant {
   @Column()
   dateObtentionDiplome: Date = null;
   @Column()
-  stages: StageEte[];
-
+  stages: StageEte[] = [];
 }

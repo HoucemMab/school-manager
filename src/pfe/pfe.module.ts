@@ -7,6 +7,7 @@ import { Pfe } from './pfe.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Pfe])],
   providers: [PfeService],
-  controllers: [PfeController]
+  controllers: [PfeController],
+  exports: [PfeService],
 })
 export class PfeModule {}
