@@ -1,3 +1,5 @@
+import { EnseignantService } from './../enseignant/enseignant.service';
+import { Enseignant } from './../enseignant/enseignant.entity';
 import { PfeService } from './../pfe/pfe.service';
 import { EtudiantActuel } from './etudiantActuel.entity';
 import {
@@ -26,6 +28,7 @@ export class EtudiantActuelService {
     private etudiantrepository: Repository<EtudiantActuel>,
     private stageEteService: StageEteService,
     private pfeService: PfeService,
+    private enseignantService: EnseignantService,
   ) {}
   async get() {
     return await this.etudiantrepository.find();
@@ -101,8 +104,10 @@ export class EtudiantActuelService {
 
   async addPFE(id: string, stage: Pfe) {
     const etudiant = await this.findOne(id);
-    if (!etudiant) {
-      throw new Error('Verify student Id');
+    const enseignant: Enseignant =
+      await this.enseignantService.getEnseignantById(stage.idEnseignant);
+    if (!etudiant || !enseignant) {
+      throw new Error('Vérifier les cordonnées saisie ! ');
     } else if (etudiant) {
       const stageCreated = await this.pfeService.addPfe(stage);
       console.log(stageCreated);

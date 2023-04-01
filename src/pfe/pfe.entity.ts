@@ -1,9 +1,15 @@
-import { Column, Entity, ObjectIdColumn, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ObjectIdColumn,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 @Entity()
 export class Pfe {
   @ObjectIdColumn()
   _id: string;
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   idpfe: string;
   @Column()
   type: string;
