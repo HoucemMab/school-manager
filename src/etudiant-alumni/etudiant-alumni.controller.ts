@@ -47,8 +47,8 @@ export class EtudiantAlumniController {
     return await this.EtudiantAlumni.updatecv(id, cv);
   }
   @Delete('/:id')
-  async deleteEtudal(@Param("id") params) {
-    return await this.EtudiantAlumni.deleteOne(params.id);
+  async deleteEtudal(@Param('id') params: string) {
+    return await this.EtudiantAlumni.deleteOne(params);
   }
 
   @Put('update')

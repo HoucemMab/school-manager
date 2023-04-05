@@ -33,14 +33,19 @@ export class EtudiantAlumniService {
       EtudiantAluId: EtudiantAlumni.EtudiantAluId,
     });
     console.log(toUpdate);
+    toUpdate.dateNaissance = EtudiantAlumni.dateNaissance;
+    toUpdate.email = EtudiantAlumni.email;
+    toUpdate.nom = EtudiantAlumni.nom;
+    toUpdate.prenom = EtudiantAlumni.prenom;
     if (toUpdate) {
-      return await this.etudiantrepository.save(EtudiantAlumni);
+      return await this.etudiantrepository.save(toUpdate);
     } else {
       throw new ForbiddenException('Student not found .. !');
     }
   }
-  async deleteOne(id: any) {
+  async deleteOne(id: string) {
     const Etudiant: EtudiantAlumni = await this.findOne(id);
+    console.log('Info etudiant', Etudiant);
     if (Etudiant) {
       return this.etudiantrepository.delete({ EtudiantAluId: id });
     } else {
