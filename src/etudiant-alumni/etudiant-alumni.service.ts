@@ -15,7 +15,7 @@ export class EtudiantAlumniService {
     return await this.etudiantrepository.find();
   }
   async findOne(id: string): Promise<EtudiantAlumni> {
-    const etudiant = this.etudiantrepository.findOneBy({
+    const etudiant = await this.etudiantrepository.findOneBy({
       EtudiantAluId: id,
     });
     if (!etudiant) {

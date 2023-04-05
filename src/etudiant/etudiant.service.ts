@@ -73,8 +73,10 @@ export class EtudiantService {
      async changerMdpEtudiant(
         changerMdpEtudiant: ChangerMdpEtudiant,
       ): Promise<Etudiant> {
-        const etudiantactuel : EtudiantActuel = await this.actuelservice.findOne(changerMdpEtudiant.id);
-        if (etudiantactuel) {
+        const etudiantactuel : EtudiantActuel  =  await this.etudiantactuelrepository.findOneBy({
+            EtudiantActId: changerMdpEtudiant.id,
+          });
+        if (etudiantactuel != null) {
             const isPasswordCorrect = await argon.verify(etudiantactuel.mdp, changerMdpEtudiant.oldmdp);
             if (!isPasswordCorrect) {
                 throw new ForbiddenException('Current password is incorrect');
@@ -83,8 +85,11 @@ export class EtudiantService {
                 return this.etudiantactuelrepository.save(etudiantactuel);
             }  
         } else {
-            const etudiantalumni = await this.alumniservice.findOne(changerMdpEtudiant.id);
-            if (etudiantalumni) {
+            const etudiantalumni : EtudiantAlumni = await this.etudiantalumnirepository.findOneBy({
+                EtudiantAluId: changerMdpEtudiant.id,
+              });
+            if (etudiantalumni != null) {
+                
                 const isPasswordCorrect = await argon.verify(etudiantalumni.mdp, changerMdpEtudiant.oldmdp);
                 if (!isPasswordCorrect) {
                     throw new ForbiddenException('Current password is incorrect');
@@ -96,6 +101,5 @@ export class EtudiantService {
                 throw new ForbiddenException('Etudiant Not Found');
             }
         }
-        
       }
 }
