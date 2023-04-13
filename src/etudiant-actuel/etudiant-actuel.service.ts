@@ -38,9 +38,6 @@ export class EtudiantActuelService {
       EtudiantActId: id,
     });
     console.log('from find ', etudiant);
-    if (!etudiant) {
-      throw new ForbiddenException('Not found');
-    }
     return etudiant;
   }
   async insertOne(EtudiantActuel: EtudiantActuel): Promise<EtudiantActuel> {

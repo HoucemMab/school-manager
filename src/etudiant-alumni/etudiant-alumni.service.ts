@@ -18,9 +18,7 @@ export class EtudiantAlumniService {
     const etudiant = await this.etudiantrepository.findOneBy({
       EtudiantAluId: id,
     });
-    if (!etudiant) {
-      throw new ForbiddenException('Not found');
-    }
+    console.log('from find ', etudiant);
     return etudiant;
   }
   async insertOne(EtudiantAlumni: EtudiantAlumni): Promise<EtudiantAlumni> {

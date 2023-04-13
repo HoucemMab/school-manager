@@ -32,11 +32,11 @@ export class EtudiantService {
 
     } async findOne(id: any): Promise<Etudiant> {
 
-        const etudiantactuel = this.actuelservice.findOne(id);
+        const etudiantactuel = await this.actuelservice.findOne(id);
         if (etudiantactuel) {
             return etudiantactuel;
         } else {
-            const etudiantalumni = this.alumniservice.findOne(id);
+            const etudiantalumni = await this.alumniservice.findOne(id);
             if (etudiantalumni) {
                 return etudiantalumni;
             } else {
