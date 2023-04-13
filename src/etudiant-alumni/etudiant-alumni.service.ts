@@ -130,4 +130,14 @@ export class EtudiantAlumniService {
       throw new ForbiddenException('Wrong Student Id ');
     }
   }
+
+  async validerCompte(id : string) {
+    const etudiant = await this.findOne(id);
+    if (etudiant) {
+      etudiant.verified = true;
+      return await this.etudiantrepository.save(etudiant);
+    } else {
+      throw new ForbiddenException('Etudiant Inexistant')
+    }
+  }
 }

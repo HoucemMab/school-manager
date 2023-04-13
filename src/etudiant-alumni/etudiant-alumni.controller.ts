@@ -55,4 +55,9 @@ export class EtudiantAlumniController {
   async updateEtudiantAl(@Body() updatestudent: EtudiantAlumanitoupdate) {
     return await this.EtudiantAlumni.updateOne(updatestudent);
   }
+
+  @Put('valider/:id')
+  async validerCompte(@Param('id') params : string){
+    return await this.EtudiantAlumni.validerCompte(params);
+  }
 }
