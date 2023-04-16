@@ -25,6 +25,16 @@ export class EtudiantAlumniController {
   async getstats(): Promise<any> {
     return this.EtudiantAlumni.stats();
   }
+
+  @Get('/paysstat')
+  async getPaystats(): Promise<any> {
+    return this.EtudiantAlumni.countAlumniPerCountry();
+  }
+
+  @Get('/societestat')
+  async getSocietestats(): Promise<any> {
+    return this.EtudiantAlumni.countAlumniPerSociete();
+  }
   @Get('/chomage')
   async getchomage(): Promise<any> {
     return this.EtudiantAlumni.chomage();

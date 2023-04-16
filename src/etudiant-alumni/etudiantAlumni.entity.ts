@@ -15,6 +15,10 @@ export class EtudiantAlumni extends Etudiant {
   vacation: Boolean;
   @Column()
   ContratExpert: Boolean;
+  @Column()
+  societe: string;
+  @Column()
+  pays: string;
   @Column({ default: false })
   verified: Boolean;
 }

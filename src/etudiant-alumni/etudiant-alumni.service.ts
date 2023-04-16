@@ -35,6 +35,8 @@ export class EtudiantAlumniService {
     toUpdate.email = EtudiantAlumni.email;
     toUpdate.nom = EtudiantAlumni.nom;
     toUpdate.prenom = EtudiantAlumni.prenom;
+    toUpdate.societe = EtudiantAlumni.societe;
+    toUpdate.pays = EtudiantAlumni.pays;
     if (toUpdate) {
       return await this.etudiantrepository.save(toUpdate);
     } else {
@@ -88,6 +90,52 @@ export class EtudiantAlumniService {
     console.log(DateObtention);
     return DateObtention;
   }
+
+  async countAlumniPerCountry() {
+    const all = await this.get();
+    const countryCounts: { [key: string]: number } = {};
+  
+    for (const alumni of all) {
+      const country = alumni.pays;
+      if (!countryCounts[country]) {
+        countryCounts[country] = 1;
+      } else {
+        countryCounts[country]++;
+      }
+    }
+  
+    const results = [];
+    for (const [country, count] of Object.entries(countryCounts)) {
+      if (!country.includes('undefined')){results.push({ country, count });}
+      
+    }
+  
+    console.log(results);
+    return results;
+  }
+
+  async countAlumniPerSociete() {
+    const all = await this.get();
+    const societeCounts: { [key: string]: number } = {};
+  
+    for (const alumni of all) {
+      const societe = alumni.societe;
+      if (!societeCounts[societe]) {
+        societeCounts[societe] = 1;
+      } else {
+        societeCounts[societe]++;
+      }
+    }
+  
+    const results = [];
+    for (const [societe, count] of Object.entries(societeCounts)) {
+      results.push({ societe, count });
+    }
+  
+    console.log(results);
+    return results;
+  }
+
   async chomage() {
     const all = await this.get();
     var days = 0;

@@ -10,6 +10,8 @@ export class EtudiantAlumanitoupdate {
     visibilite: Boolean;
     email: string;
     mdp: string;
+    pays: string;
+    societe: string;
     dateObtentionDiplome:Date;
     dateEmbacuhe:Date;
     vacation:Boolean;
