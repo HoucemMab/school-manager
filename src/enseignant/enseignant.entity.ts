@@ -1,6 +1,12 @@
 import { Role } from 'src/auth/Roles';
 import { User } from 'src/user/user.entity';
-import { Column, Entity, ObjectIdColumn, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ObjectIdColumn,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Enseignant extends User {
