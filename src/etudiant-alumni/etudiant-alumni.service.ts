@@ -129,7 +129,7 @@ export class EtudiantAlumniService {
   
     const results = [];
     for (const [societe, count] of Object.entries(societeCounts)) {
-      results.push({ societe, count });
+      if (!societe.includes('undefined')){results.push({ societe, count });}
     }
   
     console.log(results);
@@ -137,33 +137,34 @@ export class EtudiantAlumniService {
   }
 
   async chomage() {
-    const all = await this.get();
-    var days = 0;
-    var count = 0;
-    all.map((etudiant) => {
-      var diff = 0;
+    try {
+      const all = await this.get();
+      let days = 0;
+      let count = 0;
+  
+      all.forEach((etudiant) => {
+        if (etudiant.dateEmbacuhe && etudiant.dateObtentionDiplome) {
+          const diff =
+            new Date(etudiant.dateEmbacuhe).getTime() -
+            new Date(etudiant.dateObtentionDiplome).getTime();
+  
+          if (!isNaN(diff)) {
+            days += diff;
+            count++;
+          }
+        }
+      });
+  
+      const avgDays = count > 0 ? days / (1000 * 60 * 60 * 24 * count) : 0;
+      const roundedAvgDays = Number(avgDays.toFixed(2)); // Round to 2 decimal places
 
-      if (
-        etudiant.dateEmbacuhe !== null ||
-        etudiant.dateEmbacuhe !== undefined
-      ) {
-        count++;
-        diff =
-          new Date(etudiant.dateEmbacuhe).getTime() -
-          new Date(etudiant.dateObtentionDiplome).getTime();
-        days = days + diff;
-      }
-    });
-    const day_diff = days / (1000 * 60 * 60 * 24) / count;
-    console.log(count);
-
-    return (
-      'the average time waiting for the first job is (for people the ' +
-      count +
-      ' who got a job) is :' +
-      day_diff +
-      ' In days '
-    );
+      console.log(`Count: ${count}, Total Days: ${days}, Avg Days: ${roundedAvgDays}`);
+  
+      return roundedAvgDays;
+    } catch (error) {
+      console.error(error);
+      return NaN;
+    }
   }
   async updatecv(id: string, cv: Cv) {
     const etudiant = await this.findOne(id);
