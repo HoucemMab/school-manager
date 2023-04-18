@@ -25,6 +25,7 @@ import { ResponsableAuthModule } from './auth/responsable-auth/responsable-auth.
 import { AdminAuthModule } from './auth/admin-auth/admin-auth.module';
 import { StageModule } from './stage/cv.module';
 import { StageEteModule } from './stage-ete/stage-ete.module';
+import { VacationModule } from './vacation/vacation.module';
 
 
 @Module({
@@ -49,7 +50,8 @@ import { StageEteModule } from './stage-ete/stage-ete.module';
     StageModule,
     ResponsableAuthModule,
     AdminAuthModule,
-    StageEteModule
+    StageEteModule,
+    VacationModule
   ],
   controllers: [AppController],
   providers: [AppService],
