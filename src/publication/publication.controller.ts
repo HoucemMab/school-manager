@@ -14,6 +14,7 @@ import { UpdatePublicationDto } from './dto/updatePublication.dto';
 import { Roles } from 'src/auth/decorators/roles/roles.decorator';
 import { Role } from 'src/auth/Roles';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { CreatePublicationDto } from './dto/createPublication.dto';
 
 @Controller('publication')
 @UseGuards(JwtAuthGuard)
@@ -23,7 +24,7 @@ export class PublicationController {
   @Roles(Role.Etudiant)
   @Post('/create')
   async addNewPublication(
-    @Body() publication: Publication,
+    @Body() publication: CreatePublicationDto,
   ): Promise<Publication> {
     return this.publicationService.addPublication(publication);
   }

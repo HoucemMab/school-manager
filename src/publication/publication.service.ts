@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Publication } from './publication.entity';
 import { MongoRepository } from 'typeorm';
 import { UpdatePublicationDto } from './dto/updatePublication.dto';
+import { CreatePublicationDto } from './dto/createPublication.dto';
 
 @Injectable()
 export class PublicationService {
@@ -11,7 +12,27 @@ export class PublicationService {
       private publicationRepository: MongoRepository<Publication>,
   ) {}
 
-  async addPublication(publication: Publication): Promise<Publication> {
+  async addPublication(createPublicationDto: CreatePublicationDto): Promise<Publication> {
+
+    const publication = new Publication();
+        let id=0;
+        let pub: Publication = await this.publicationRepository.findOneBy(
+            {
+                idPublication: id.toString(),
+            },
+        );
+        while(pub!=null){
+            id++;
+            pub = await this.publicationRepository.findOneBy(
+                {
+                    idPublication: id.toString(),
+                },
+            );
+        }
+        publication.idPublication=id.toString();
+        publication.contenu = createPublicationDto.contenu;
+        publication.type = createPublicationDto.type;
+        publication.EtudiantAluId = createPublicationDto.EtudiantAluId;
       return this.publicationRepository.save(publication);
   }
 
@@ -20,15 +41,15 @@ export class PublicationService {
   }
 
   async getPublicationById(id: string): Promise<Publication> {
-      const publication: Publication = await this.publicationRepository.findOneBy({
-        idPublication: id,
-      });
-      console.log(publication, id);
-      if (!publication) {
-        throw new ForbiddenException('Error');
-      } else {
-        return publication;
-      }
+    const publication: Publication = await this.publicationRepository.findOneBy({
+      idPublication: id,
+    });
+    console.log(publication, id);
+    if (!publication) {
+      throw new ForbiddenException('Error');
+    } else {
+      return publication;
+    }
   }
 
   async updatePublication(updatePublicationDto: UpdatePublicationDto): Promise<Publication> {
@@ -36,7 +57,6 @@ export class PublicationService {
       idPublication: updatePublicationDto.idPublication,
     });
     if (toUpdate) {
-      toUpdate.idEtudiant = updatePublicationDto.idEtudiant;
       toUpdate.contenu = updatePublicationDto.contenu;
       toUpdate.type = updatePublicationDto.type;
       return await this.publicationRepository.save(toUpdate);

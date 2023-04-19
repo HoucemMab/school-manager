@@ -2,7 +2,7 @@ export class UpdatePublicationDto {
 
     idPublication: string;
 
-    idEtudiant: number;
+    idEtudiant: string;
 
     contenu: string;
 

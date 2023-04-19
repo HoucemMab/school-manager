@@ -9,7 +9,7 @@ export class Publication {
   idPublication: string;
 
   @Column()
-  idEtudiant: number;
+  EtudiantAluId: string;
 
   @Column()
   contenu: string;

@@ -26,7 +26,6 @@ export class VacationService {
                     idVacation: id.toString(),
                 },
             );
-            console.log(id);
         }
         vacation.idVacation=id.toString();
         vacation.titre = createVacationDto.titre;
