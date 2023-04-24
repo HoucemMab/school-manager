@@ -23,6 +23,11 @@ export class EtudiantActuelController {
     return this.etudiantactuel.get();
   }
 
+  @Get('/pfe')
+  async getPfet() {
+    return this.etudiantactuel.getPfe();
+  }
+
   @Get('/:id')
   async getEtudiantActuel(
     @Param('id') params: string,

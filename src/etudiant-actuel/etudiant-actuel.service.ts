@@ -118,6 +118,7 @@ export class EtudiantActuelService {
       return this.updateOne(etudiant);
     }
   }
+
   async updatecv(id: string, cv: Cv) {
     const etudiant = await this.findOne(id);
     if (etudiant) {
@@ -128,6 +129,26 @@ export class EtudiantActuelService {
     } else {
       throw new ForbiddenException('Wrong Student Id ');
     }
+  }
+
+  async getPfe() {
+    let pfeList = await this.pfeService.findAllPfe();
+
+    let formztedList = Promise.all(
+      pfeList.map(async (pfeEle) => {
+        return {
+          ...pfeEle,
+          etudiant: {
+            ...(await this.etudiantrepository.findOneBy({
+              EtudiantActId: pfeEle.idEtudiant,
+            })),
+            mdp: undefined,
+            login: undefined,
+          },
+        };
+      }),
+    );
+    return formztedList;
   }
   //Partie Mailling , A ne pas modifier
 

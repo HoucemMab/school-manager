@@ -25,4 +25,7 @@ export class Pfe {
 
   @Column()
   sujet: string;
+
+  @Column()
+  idEtudiant: string;
 }
