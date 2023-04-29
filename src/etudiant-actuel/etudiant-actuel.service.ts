@@ -143,11 +143,11 @@ export class EtudiantActuelService {
               EtudiantActId: pfeEle.idEtudiant,
             })),
             mdp: undefined,
-            login: undefined,
           },
         };
       }),
     );
+    console.log('form', formztedList);
     return formztedList;
   }
   //Partie Mailling , A ne pas modifier

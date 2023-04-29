@@ -21,7 +21,7 @@ import { Role } from 'src/auth/Roles';
 export class PfeController {
   constructor(private pfeService: PfeService) {}
   @Get()
-  @Roles(Role.Admin)
+  // @Roles(Role.Admin)
   async getAllPfe(): Promise<Pfe[]> {
     return this.pfeService.findAllPfe();
   }
@@ -34,8 +34,10 @@ export class PfeController {
   async getstats(): Promise<any> {
     return this.pfeService.stats();
   }
+
   @Get('/:id')
   async getPfeById(@Param('id') params: string): Promise<Pfe> {
+    console.log(params);
     return await this.pfeService.findPfeById(params);
   }
   @Post('/create')
@@ -55,9 +57,11 @@ export class PfeController {
   }
   @Post('/encadrant')
   async affectencadrant(@Body() toEncader: EncadrantDto) {
-    return await this.pfeService.beEncadrant(
+    const pfe = await this.pfeService.beEncadrant(
       toEncader.idpfe,
       toEncader.idEnseignant,
     );
+    console.log(toEncader.idEnseignant);
+    return pfe;
   }
 }

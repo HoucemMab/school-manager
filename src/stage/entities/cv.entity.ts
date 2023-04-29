@@ -1,20 +1,25 @@
-import { Column, Entity, ObjectIdColumn, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ObjectIdColumn,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Cv {
   @ObjectIdColumn()
   _id: string;
 
-  @PrimaryColumn({unique:true})
+  @PrimaryGeneratedColumn()
   idCv: string;
 
   @Column()
   Competences: string[];
 
   @Column()
-  formation:string[];
+  formation: string[];
 
   @Column()
-  experience:string[];
-
+  experience: string[];
 }

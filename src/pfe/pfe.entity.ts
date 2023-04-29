@@ -9,7 +9,7 @@ import {
 export class Pfe {
   @ObjectIdColumn()
   _id: string;
-  @PrimaryGeneratedColumn()
+  @Column()
   idpfe: string;
   @Column()
   type: string;

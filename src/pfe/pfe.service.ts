@@ -7,7 +7,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
 import { UpdatePfeDto } from './pfe.dto';
 import { Pfe } from './pfe.entity';
-import { NotFoundError } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
+import { Console } from 'console';
 
 @Injectable()
 export class PfeService {
@@ -15,8 +16,9 @@ export class PfeService {
 
   async addPfe(pfe: Pfe): Promise<Pfe> {
     const pfetoAdd = await this.pfeRepository.save(pfe);
-    console.log('Say Hi !', pfetoAdd);
-    return pfetoAdd;
+    pfetoAdd.idpfe = uuidv4();
+
+    return await this.pfeRepository.save(pfetoAdd);
   }
   async findAllPfe(): Promise<Pfe[]> {
     return await this.pfeRepository.find();
@@ -33,14 +35,13 @@ export class PfeService {
   }
 
   async findPfeById(id: string): Promise<Pfe> {
-    const Pfe = await this.pfeRepository.findOneBy({
-      idpfe: id,
-    });
-    console.log(Pfe);
-    if (!Pfe) {
-      throw new ForbiddenException('Not found');
+    const pfe = await this.pfeRepository.findOneBy({ idpfe: id });
+    if (!pfe) {
+      console.log('notfound');
+      throw new NotFoundException('Not found');
+    } else {
+      return pfe;
     }
-    return Pfe;
   }
   async deletePfeById(id: string): Promise<DeleteResult> {
     const pfe: Pfe = await this.findPfeById(id);
@@ -53,20 +54,20 @@ export class PfeService {
   async updatePfeById(updatePfeDto: UpdatePfeDto) {
     console.log(updatePfeDto);
 
-    const toUpdate: Pfe = await this.pfeRepository.findOneBy({
-      idpfe: updatePfeDto.idpfe,
-    });
-    console.log(toUpdate);
+    const toUpdate: Pfe = await this.findPfeById(updatePfeDto.idpfe);
+    console.log('from update', toUpdate);
     if (toUpdate) {
       return await this.pfeRepository.save(updatePfeDto);
     } else {
-      throw new ForbiddenException('Pfe not found .. !');
+      throw new NotFoundException('Pfe not found .. !');
     }
   }
   async beEncadrant(id: string, idEnseignant: string) {
+    console.log('pfeId', id, 'idEnseignant', idEnseignant);
     const pfe = await this.findPfeById(id);
     pfe.idEnseignant = idEnseignant;
-    return this.updatePfeById(pfe);
+
+    return await this.pfeRepository.save(pfe);
   }
   async stats(): Promise<any> {
     const all = await this.findAllPfe();
