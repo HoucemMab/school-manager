@@ -12,16 +12,56 @@ export class AssetService {
         @InjectRepository(EtudiantActuel)
         private etudiantrepository: Repository<EtudiantActuel>) { }
 
-    create(file: Express.Multer.File) {
+    async create(file: Express.Multer.File) {
         const stream = Readable.from(file.buffer);
-        let etudiantact = new Array<EtudiantActuel>;
+        let etudiantact = new Array<any>;
         var i = 0;
         const csvData = parse(stream, {
-            header: false,
-            worker: true,
-            dynamicTyping: true,
-            delimiter: ";",
-            step: function (row) {
+            header: true,
+            skipEmptyLines: true,
+            complete: async (results) => {
+                //console.log('results:', results)
+
+                etudiantact = results.data;
+                for (let k = 0; k < etudiantact.length; k++) {
+                    etudiantact[k].login = parseInt(etudiantact[k].login);
+                    //etudiantact[k].anneEtudet=etudiantact[k].anneEtudet;
+                    let etudiant = new EtudiantActuel();
+
+                    const element = etudiantact[k];
+
+                    //console.log("student", element);
+                    element.pfa = null;
+                    element.cv = null;
+                    element.pfe = null;
+                    element.stages = null;
+                    element.login = element.login;
+                    etudiant = element;
+                    const test =await this.etudiantrepository.findOneBy({
+                        login: etudiant.login
+                    });
+                    if (test!=null) {
+                        console.log(test.login);
+                        
+                        console.log("Already existing");
+
+                    } else {
+                        this.etudiantrepository.save(etudiant);
+                    }
+
+
+
+
+                }
+                return etudiantact;
+
+
+
+            }
+
+
+
+            /*step: function (row) {
                 const etudiant = new EtudiantActuel();
                 if (i > 0) {
                     var j = 0;
@@ -42,19 +82,48 @@ export class AssetService {
                     etudiant.pfe = null;
                     etudiant.stages = [];
                     etudiant.cv = null;
-
-
-
+ 
+ 
+ 
                 }
                 i++;
-
+ 
                 console.log("hala madrid");
                 etudiantact.push(etudiant);
-
-            },
+ 
+            },*/
 
 
         });
+        /* for(var k = 0; k < etudiantact.length; k++){
+             const test = this.etudiantrepository.findOneBy({
+                 EtudiantActId: etudiantact[k].EtudiantActId
+             })
+             if (test) {
+                 (await test).dateNaissance = etudiantact[k].dateNaissance;
+                 (await test).nom = etudiantact[k].nom;
+                 (await test).prenom = etudiantact[k].prenom;
+                 (await test).login = etudiantact[k].login;
+                 (await test).Classe = etudiantact[k].Classe;
+                 (await test).stages = etudiantact[k].stages;
+                 (await test).formation = etudiantact[k].formation;
+                 (await test).email = etudiantact[k].email;
+                 (await test).mdp = etudiantact[k].mdp;
+                 (await test).poste = etudiantact[k].poste;
+                 (await test).niveau = etudiantact[k].niveau;
+                 (await test).visibilite = etudiantact[k].visibilite;
+                 (await test).anneEtudet = etudiantact[k].anneEtudet;
+                 this.etudiantrepository.save(await(test));
+ 
+             } else {
+                 this.etudiantrepository.save(
+                     this.etudiantrepository.create(etudiantact[k])
+                 );
+             }
+ 
+         }*/
+
+        /*
         setTimeout(async () => {
             for (var k = 0; k < etudiantact.length; k++) {
                 const test = await this.etudiantrepository.findOneBy({
@@ -84,6 +153,6 @@ export class AssetService {
 
             }
 
-        }, 1000);
+        }, 1000);*/
     }
 }
