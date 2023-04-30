@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable,HttpException,HttpStatus  } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 const { Readable } = require('stream');
 import { Repository } from 'typeorm';
 import { parse } from 'papaparse';
 import { EtudiantActuel } from 'src/etudiant-actuel/etudiantActuel.entity';
+import { BaseExceptionFilter } from '@nestjs/core';
 
 
 @Injectable()
@@ -15,48 +16,67 @@ export class AssetService {
     async create(file: Express.Multer.File) {
         const stream = Readable.from(file.buffer);
         let etudiantact = new Array<any>;
+        var liste =new Array<any>;
         var i = 0;
         const csvData = parse(stream, {
             header: true,
             skipEmptyLines: true,
             complete: async (results) => {
                 //console.log('results:', results)
+                console.log("fields",results.meta.fields)
+                const areEqual = JSON.stringify(results.meta.fields) === JSON.stringify([
+                    'nom', 'prenom',
+                    'dateNaissance', 'formation',
+                    'poste', 'visibilite',
+                    'niveau', 'classe',
+                    'anneeEdut', 'login',
+                    'mdp', 'EtudiantActId'
+                ]);
+                if (!areEqual) {
+                    throw new HttpException("please verify your fields of the file",HttpStatus.BAD_REQUEST)
 
-                etudiantact = results.data;
-                for (let k = 0; k < etudiantact.length; k++) {
-                    etudiantact[k].login = parseInt(etudiantact[k].login);
-                    //etudiantact[k].anneEtudet=etudiantact[k].anneEtudet;
-                    let etudiant = new EtudiantActuel();
+                }
+                else {
+                    etudiantact = results.data;
+                    for (let k = 0; k < etudiantact.length; k++) {
+                        etudiantact[k].login = parseInt(etudiantact[k].login);
+                        //etudiantact[k].anneEtudet=etudiantact[k].anneEtudet;
+                        let etudiant = new EtudiantActuel();
 
-                    const element = etudiantact[k];
+                        const element = etudiantact[k];
 
-                    //console.log("student", element);
-                    element.pfa = null;
-                    element.cv = null;
-                    element.pfe = null;
-                    element.stages = null;
-                    element.login = element.login;
-                    etudiant = element;
-                    const test =await this.etudiantrepository.findOneBy({
-                        login: etudiant.login
-                    });
-                    if (test!=null) {
-                        console.log(test.login);
-                        
-                        console.log("Already existing");
+                        //console.log("student", element);
+                        element.pfa = null;
+                        element.cv = null;
+                        element.pfe = null;
+                        element.stages = null;
+                        element.login = element.login;
+                        etudiant = element;
+                        const test = await this.etudiantrepository.findOneBy({
+                            login: etudiant.login
+                        });
+                        if (test != null) {
+                            console.log(test.login);
 
-                    } else {
-                        this.etudiantrepository.save(etudiant);
+                            console.log("Already existing");
+
+                        } else {
+                            liste.push(etudiant);
+                            this.etudiantrepository.save(etudiant);
+                        }
+
+
+
+
                     }
-
+                    return {
+                        success:"studends added successfuly",
+                        liste:liste,
+                    };
 
 
 
                 }
-                return etudiantact;
-
-
-
             }
 
 
