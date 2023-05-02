@@ -102,7 +102,7 @@ export class EtudiantAuthService {
     };
     const access_token = await this.jwtService.signAsync(payload, {
       secret: 'schoolManager',
-      expiresIn: '15m',
+      expiresIn: '360m',
     });
     return {
       access_token: access_token,

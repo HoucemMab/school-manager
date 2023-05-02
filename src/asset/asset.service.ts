@@ -1,10 +1,12 @@
-import { ForbiddenException, Injectable,HttpException,HttpStatus  } from '@nestjs/common';
+import { ForbiddenException, Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 const { Readable } = require('stream');
 import { Repository } from 'typeorm';
 import { parse } from 'papaparse';
 import { EtudiantActuel } from 'src/etudiant-actuel/etudiantActuel.entity';
 import { BaseExceptionFilter } from '@nestjs/core';
+import * as argon from 'argon2';
+
 
 
 @Injectable()
@@ -16,14 +18,14 @@ export class AssetService {
     async create(file: Express.Multer.File) {
         const stream = Readable.from(file.buffer);
         let etudiantact = new Array<any>;
-        var liste =new Array<any>;
+        var liste = new Array<any>;
         var i = 0;
         const csvData = parse(stream, {
             header: true,
             skipEmptyLines: true,
             complete: async (results) => {
                 //console.log('results:', results)
-                console.log("fields",results.meta.fields)
+                console.log("fields", results.meta.fields)
                 const areEqual = JSON.stringify(results.meta.fields) === JSON.stringify([
                     'nom', 'prenom',
                     'dateNaissance', 'formation',
@@ -33,7 +35,7 @@ export class AssetService {
                     'mdp', 'EtudiantActId'
                 ]);
                 if (!areEqual) {
-                    throw new HttpException("please verify your fields of the file",HttpStatus.BAD_REQUEST)
+                    throw new HttpException("please verify your fields of the file", HttpStatus.BAD_REQUEST)
 
                 }
                 else {
@@ -50,7 +52,10 @@ export class AssetService {
                         element.cv = null;
                         element.pfe = null;
                         element.stages = null;
+                        element.visibilite=Boolean(etudiantact[k].visibilite);
                         element.login = element.login;
+                        const hash = await argon.hash(element.mdp);
+                        element.mdp = hash;
                         etudiant = element;
                         const test = await this.etudiantrepository.findOneBy({
                             login: etudiant.login
@@ -70,8 +75,8 @@ export class AssetService {
 
                     }
                     return {
-                        success:"studends added successfuly",
-                        liste:liste,
+                        success: "studends added successfuly",
+                        liste: liste,
                     };
 
 
