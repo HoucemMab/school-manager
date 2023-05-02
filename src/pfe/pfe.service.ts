@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import {
   ForbiddenException,
   NotFoundException,
@@ -8,11 +8,16 @@ import { DeleteResult, Repository } from 'typeorm';
 import { UpdatePfeDto } from './pfe.dto';
 import { Pfe } from './pfe.entity';
 import { v4 as uuidv4 } from 'uuid';
-import { Console } from 'console';
+import { WebSocketGateway } from '@nestjs/websockets';
+import { NotificationServiceGateway } from './../notification/notification.service';
+import { Enseignant } from 'src/enseignant/enseignant.entity';
 
 @Injectable()
 export class PfeService {
-  constructor(@InjectRepository(Pfe) private pfeRepository: Repository<Pfe>) {}
+  constructor(
+    @InjectRepository(Pfe) private pfeRepository: Repository<Pfe>,
+    private notificationServiceGateway: NotificationServiceGateway,
+  ) {}
 
   async addPfe(pfe: Pfe): Promise<Pfe> {
     const pfetoAdd = await this.pfeRepository.save(pfe);
@@ -66,8 +71,15 @@ export class PfeService {
     console.log('pfeId', id, 'idEnseignant', idEnseignant);
     const pfe = await this.findPfeById(id);
     pfe.idEnseignant = idEnseignant;
-
-    return await this.pfeRepository.save(pfe);
+    this.pfeRepository
+      .save(pfe)
+      .then(() =>
+        this.notificationServiceGateway.sendNotification(
+          pfe.idEtudiant,
+          'Votre sujet a été bien Affecté',
+        ),
+      );
+    return;
   }
   async stats(): Promise<any> {
     const all = await this.findAllPfe();

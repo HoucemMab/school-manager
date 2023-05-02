@@ -60,4 +60,8 @@ export class EtudiantActuelController {
   async updateEtudact(@Body() updatestudent: Etudiantacttoupdate) {
     return await this.etudiantactuel.updateOne(updatestudent);
   }
+  @Get('/notificatiotravail')
+  async sendJobNotification() {
+    return await this.etudiantactuel.sendJobEmail();
+  }
 }

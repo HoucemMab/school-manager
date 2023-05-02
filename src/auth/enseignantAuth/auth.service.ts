@@ -35,7 +35,11 @@ export class AuthService {
       if (!passwordVerify) {
         throw new ForbiddenException('Wrong Credentials...!');
       } else {
-        return this.signToken(enseignant.idEnseignant, enseignant.mdp, enseignant.roles);
+        return this.signToken(
+          enseignant.idEnseignant,
+          enseignant.mdp,
+          enseignant.roles,
+        );
       }
     }
   }

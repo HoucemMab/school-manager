@@ -9,6 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { StageEteModule } from 'src/stage-ete/stage-ete.module';
 import { PfeModule } from 'src/pfe/pfe.module';
 import { EnseignantModule } from 'src/enseignant/enseignant.module';
+import { NotificationModule } from 'src/notification/notification.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { EnseignantModule } from 'src/enseignant/enseignant.module';
     StageEteModule,
     PfeModule,
     EnseignantModule,
+    NotificationModule,
   ],
   controllers: [EtudiantActuelController],
   providers: [EtudiantActuelService],

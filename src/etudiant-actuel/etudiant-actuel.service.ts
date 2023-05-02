@@ -12,13 +12,14 @@ import { Etudiant } from 'src/etudiant/etudiant.entity';
 import { MailingService } from 'src/mailing/mailing.service';
 import { MongoRepository } from 'typeorm';
 import { getManager, Repository } from 'typeorm';
-import { Cron } from '@nestjs/schedule';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { Etudiantacttoupdate } from './etudiantact.dto';
 import { Cv } from 'src/stage/entities/cv.entity';
 import { StageEteService } from 'src/stage-ete/stage-ete.service';
 import { StageEte } from 'src/stage-ete/stageEte.entity';
 import * as argon from 'argon2';
 import { Pfe } from 'src/pfe/pfe.entity';
+import { NotificationServiceGateway } from 'src/notification/notification.service';
 
 @Injectable()
 export class EtudiantActuelService {
@@ -29,6 +30,7 @@ export class EtudiantActuelService {
     private stageEteService: StageEteService,
     private pfeService: PfeService,
     private enseignantService: EnseignantService,
+    private notificationGatewayService: NotificationServiceGateway,
   ) {}
   async get() {
     return await this.etudiantrepository.find();
@@ -159,14 +161,23 @@ export class EtudiantActuelService {
     const etudiantSansDiplome = etudiants.filter(
       (etudiant) => etudiant.dateObtentionDiplome == null,
     );
-    etudiantSansDiplome.map(
-      async (e) =>
-        await this.mailingService.sendEmailToAddDiploma(e.email, e.nom),
-    );
+    etudiantSansDiplome.map(async (e) => {
+      await this.mailingService.sendEmailToAddDiploma(e.email, e.nom),
+        await this.notificationGatewayService.sendDiplomaNotification(
+          e.EtudiantActId,
+          'Veuillez Ajouter Votre diplome ..! ',
+        );
+    });
   }
-  @Cron('0 0 1 */6 *')
+  // @Cron('0 0 1 */6 *')
   async sendJobEmail() {
     const etudiants: Etudiant[] = await this.etudiantrepository.find();
-    etudiants.map((e) => this.mailingService.sendEmailToAddJob(e.email, e.nom));
+    etudiants.map(async (e) => {
+      this.mailingService.sendEmailToAddJob(e.email, e.nom),
+        await this.notificationGatewayService.sendJobNotification(
+          e.login.toString(),
+          "Si vous avez decrocher une nouvelle oppurtunité , Veuillez l'ajouter S'il vous plait . Merci :) !",
+        );
+    });
   }
 }
