@@ -70,4 +70,9 @@ export class EtudiantAlumniController {
   async validerCompte(@Param('id') params : string){
     return await this.EtudiantAlumni.validerCompte(params);
   }
+
+  @Put('refuser/:id')
+  async refuserCompte(@Param('id') params : string){
+    return await this.EtudiantAlumni.refuserCompte(params);
+  }
 }
