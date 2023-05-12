@@ -28,6 +28,7 @@ import { StageEteModule } from './stage-ete/stage-ete.module';
 import { VacationModule } from './vacation/vacation.module';
 import { ContratExpertModule } from './contrat-expert/contrat-expert.module';
 import { NotificationModule } from './notification/notification.module';
+import { AnneuniversitaireModule } from './anneuniversitaire/anneuniversitaire.module';
 
 
 @Module({
@@ -55,7 +56,8 @@ import { NotificationModule } from './notification/notification.module';
     StageEteModule,
     VacationModule,
     ContratExpertModule,
-    NotificationModule
+    NotificationModule,
+    AnneuniversitaireModule
   ],
   controllers: [AppController],
   providers: [AppService],

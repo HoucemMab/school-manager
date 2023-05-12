@@ -4,12 +4,16 @@ import { EvenementService } from './evenement.service';
 import { Evenement } from './evenement.entity';
 import { EvenementController } from './evenement.controller';
 import { EtudiantModule } from 'src/etudiant/etudiant.module';
-
+import { AnneuniversitaireModule } from 'src/anneuniversitaire/anneuniversitaire.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Evenement]), EtudiantModule ],
+  imports: [
+    TypeOrmModule.forFeature([Evenement]),
+    EtudiantModule,
+    AnneuniversitaireModule,
+  ],
   providers: [EvenementService],
   controllers: [EvenementController],
-  exports:[EvenementService]
+  exports: [EvenementService],
 })
 export class EvenementModule {}

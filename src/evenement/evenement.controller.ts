@@ -17,11 +17,11 @@ import { RolesGuard } from 'src/auth/guards/roles/roles.guard';
 import { Role } from 'src/auth/Roles';
 
 @Controller('evenement')
-@UseGuards(JwtAuthGuard, RolesGuard)
+// @UseGuards(JwtAuthGuard, RolesGuard)
 export class EvenementController {
   constructor(private evenementService: EvenementService) {}
 
-  @Roles(Role.Admin)
+  // @Roles(Role.Admin)
   @Post('/create')
   async addNewEvenement(@Body() evenement: Evenement): Promise<Evenement> {
     return this.evenementService.addEvenement(evenement);

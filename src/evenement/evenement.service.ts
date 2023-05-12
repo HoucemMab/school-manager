@@ -1,62 +1,74 @@
-import { ForbiddenException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EtudiantService } from 'src/etudiant/etudiant.service';
 import { MongoRepository, Repository } from 'typeorm';
 import { UpdateEvenementDto } from './dto/updateEvenement.dto';
 import { Evenement } from './evenement.entity';
+import { AnneuniversitaireService } from 'src/anneuniversitaire/anneuniversitaire.service';
 
 @Injectable()
 export class EvenementService {
-    
-    constructor(
-        @InjectRepository(Evenement)
-        private evenementRepository: MongoRepository<Evenement>,
-    ) {}
+  constructor(
+    @InjectRepository(Evenement)
+    private evenementRepository: MongoRepository<Evenement>,
+    private anneUniversitaireService: AnneuniversitaireService,
+  ) {}
 
-    async addEvenement(evenement: Evenement): Promise<Evenement> {
-        return this.evenementRepository.save(evenement);
+  async addEvenement(evenement: Evenement): Promise<Evenement> {
+    const anneUniversite = await this.anneUniversitaireService.create(
+      evenement.anneuniversitaire,
+    );
+    evenement.anneuniversitaire = anneUniversite;
+    return await this.evenementRepository.save(evenement);
+  }
+
+  async findAll(): Promise<Evenement[]> {
+    return this.evenementRepository.find();
+  }
+
+  async findEvenementById(id: string): Promise<Evenement> {
+    const evenement: Evenement = await this.evenementRepository.findOneBy({
+      idEvenement: id,
+    });
+    console.log(evenement, id);
+    if (!evenement) {
+      throw new ForbiddenException('Event Not Found');
+    } else {
+      return evenement;
     }
+  }
 
-    
-
-    async findAll(): Promise<Evenement[]> {
-        return this.evenementRepository.find();
+  async deleteEvenement(id: string): Promise<Evenement> {
+    const evenement: Evenement = await this.evenementRepository.findOneBy({
+      idEvenement: id,
+    });
+    if (!evenement) {
+      throw new NotFoundException('Error');
+    } else {
+      await this.evenementRepository.delete({ idEvenement: id });
+      return evenement;
     }
+  }
 
-    async findEvenementById(id: string): Promise<Evenement> {
-        const evenement: Evenement = await this.evenementRepository.findOneBy({
-          idEvenement: id,
-        });
-        console.log(evenement, id);
-        if (!evenement) {
-          throw new ForbiddenException('Event Not Found');
-        } else {
-          return evenement;
-        }
+  async updateEvenement(
+    updateEvenementDto: UpdateEvenementDto,
+  ): Promise<Evenement> {
+    const toUpdate: Evenement = await this.evenementRepository.findOneBy({
+      idEvenement: updateEvenementDto.idEvenement,
+    });
+    console.log(toUpdate);
+    if (toUpdate) {
+      toUpdate.nom = updateEvenementDto.nom;
+      toUpdate.dateEvenement = updateEvenementDto.dateEvenement;
+      toUpdate.description = updateEvenementDto.description;
+      return await this.evenementRepository.save(toUpdate);
+    } else {
+      throw new ForbiddenException('Evenement not found .. !');
     }
-
-    async deleteEvenement(id: string): Promise<Evenement> {
-        const evenement: Evenement = await this.evenementRepository.findOneBy({ idEvenement: id });
-        if (!evenement) {
-            throw new NotFoundException('Error');
-        } else {
-            await this.evenementRepository.delete({ idEvenement: id });
-            return evenement;
-        }
-    }
-
-    async updateEvenement(updateEvenementDto: UpdateEvenementDto): Promise<Evenement> {
-        const toUpdate: Evenement = await this.evenementRepository.findOneBy({
-            idEvenement: updateEvenementDto.idEvenement,
-        });
-        console.log(toUpdate)
-        if (toUpdate) {
-          toUpdate.nom=updateEvenementDto.nom;
-          toUpdate.dateEvenement=updateEvenementDto.dateEvenement;
-          toUpdate.description=updateEvenementDto.description;
-          return await this.evenementRepository.save(toUpdate);
-        } else {
-          throw new ForbiddenException('Evenement not found .. !');
-        }
-    }
+  }
 }
