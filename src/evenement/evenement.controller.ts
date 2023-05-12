@@ -15,6 +15,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { Roles } from 'src/auth/decorators/roles/roles.decorator';
 import { RolesGuard } from 'src/auth/guards/roles/roles.guard';
 import { Role } from 'src/auth/Roles';
+import { CreateEvenementDto } from './dto/createEvent.dto';
 
 @Controller('evenement')
 // @UseGuards(JwtAuthGuard, RolesGuard)
@@ -23,7 +24,9 @@ export class EvenementController {
 
   // @Roles(Role.Admin)
   @Post('/create')
-  async addNewEvenement(@Body() evenement: Evenement): Promise<Evenement> {
+  async addNewEvenement(
+    @Body() evenement: CreateEvenementDto,
+  ): Promise<Evenement> {
     return this.evenementService.addEvenement(evenement);
   }
 

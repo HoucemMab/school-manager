@@ -23,8 +23,8 @@ export class AnneuniversitaireService {
     return await this.anneUniversitaireRepository.find();
   }
 
-  async findOne(id: string): Promise<Anneuniversitaire> {
-    return await this.anneUniversitaireRepository.findOneBy({ id: id });
+  async findOne(a: string): Promise<Anneuniversitaire> {
+    return await this.anneUniversitaireRepository.findOneBy({ anne: a });
   }
 
   async remove(id: string) {

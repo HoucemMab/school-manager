@@ -53,10 +53,12 @@ export class EtudiantAuthService {
   }
 
   async signIn(signInUser: SingInUserDTO): Promise<{ access_token: string }> {
+    console.log('signInUser', signInUser);
     const etudiant: EtudiantAlumni =
       await this.etudiantAlumniRepository.findOneBy({
         login: signInUser.login,
       });
+    console.log('etudiant signIn service', etudiant);
     if (!etudiant) {
       const etudiant: EtudiantActuel =
         await this.etudiantActuelRepository.findOneBy({

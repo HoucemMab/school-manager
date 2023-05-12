@@ -10,6 +10,7 @@ import { MongoRepository, Repository } from 'typeorm';
 import { UpdateEvenementDto } from './dto/updateEvenement.dto';
 import { Evenement } from './evenement.entity';
 import { AnneuniversitaireService } from 'src/anneuniversitaire/anneuniversitaire.service';
+import { CreateEvenementDto } from './dto/createEvent.dto';
 
 @Injectable()
 export class EvenementService {
@@ -19,12 +20,19 @@ export class EvenementService {
     private anneUniversitaireService: AnneuniversitaireService,
   ) {}
 
-  async addEvenement(evenement: Evenement): Promise<Evenement> {
-    const anneUniversite = await this.anneUniversitaireService.create(
-      evenement.anneuniversitaire,
+  async addEvenement(evenement: CreateEvenementDto): Promise<Evenement> {
+    console.log(evenement.anneuniversitaireName);
+    const anneUniversite = await this.anneUniversitaireService.findOne(
+      evenement.anneuniversitaireName,
     );
-    evenement.anneuniversitaire = anneUniversite;
-    return await this.evenementRepository.save(evenement);
+    console.log(anneUniversite);
+    const event: Evenement = new Evenement();
+    event.anneuniversitaire = anneUniversite;
+    event.dateEvenement = evenement.dateEvenement;
+    event.description = evenement.description;
+    event.nom = evenement.nom;
+
+    return await this.evenementRepository.save(event);
   }
 
   async findAll(): Promise<Evenement[]> {

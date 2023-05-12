@@ -108,6 +108,7 @@ export class EtudiantActuelService {
     if (!etudiant || !enseignant) {
       throw new Error('Vérifier les cordonnées saisie ! ');
     } else if (etudiant) {
+      stage.idEtudiant = id;
       const stageCreated = await this.pfeService.addPfe(stage);
       console.log(stageCreated);
       if (stageCreated) {
