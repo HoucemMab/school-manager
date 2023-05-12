@@ -187,4 +187,14 @@ export class EtudiantAlumniService {
       throw new ForbiddenException('Etudiant Inexistant')
     }
   }
+
+  async refuserCompte(id : string) {
+    const etudiant = await this.findOne(id);
+    if (etudiant) {
+      etudiant.verified = false;
+      return await this.etudiantrepository.save(etudiant);
+    } else {
+      throw new ForbiddenException('Etudiant Inexistant')
+    }
+  }
 }
