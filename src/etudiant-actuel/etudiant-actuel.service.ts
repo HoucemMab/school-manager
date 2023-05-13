@@ -31,7 +31,7 @@ export class EtudiantActuelService {
     private pfeService: PfeService,
     private enseignantService: EnseignantService,
     private notificationGatewayService: NotificationServiceGateway,
-  ) {}
+  ) { }
   async get() {
     return await this.etudiantrepository.find();
   }
@@ -45,6 +45,7 @@ export class EtudiantActuelService {
   async insertOne(EtudiantActuel: EtudiantActuel): Promise<EtudiantActuel> {
     const hash = await argon.hash(EtudiantActuel.mdp);
     EtudiantActuel.mdp = hash;
+    EtudiantActuel.Reussi = 0;
     return await this.etudiantrepository.save(EtudiantActuel);
   }
   async updateOne(EtudiantActuel: Etudiantacttoupdate) {
@@ -68,6 +69,7 @@ export class EtudiantActuelService {
       toUpdate.niveau = EtudiantActuel.niveau;
       toUpdate.visibilite = EtudiantActuel.visibilite;
       toUpdate.anneEtudet = EtudiantActuel.anneEtudet;
+      toUpdate.Reussi = EtudiantActuel.Reussi;
 
       return await this.etudiantrepository.save(toUpdate);
     } else {

@@ -29,6 +29,8 @@ export class EtudiantActuel extends Etudiant {
   @Column()
   pfe: Pfe;
   @Column()
+  Reussi: Number;
+  @Column()
   dateObtentionDiplome: Date = null;
   @Column()
   stages: StageEte[] = [];

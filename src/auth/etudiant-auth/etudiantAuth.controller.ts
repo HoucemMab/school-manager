@@ -5,7 +5,7 @@ import { Post } from '@nestjs/common/decorators/http/request-mapping.decorator';
 import { Body } from '@nestjs/common/decorators/http/route-params.decorator';
 import { SingInUserDTO } from '../dtos/signinUser.dto';
 
-@Controller('/etudiant/auth')
+@Controller('etudiant/auth')
 export class etudiantAuthController {
   constructor(private etudiantAuthService: EtudiantAuthService) {}
   @Post('/signup/alumni')
