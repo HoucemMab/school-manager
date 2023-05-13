@@ -3,12 +3,13 @@ import { DeleteResult } from 'typeorm';
 import { Admin } from './admin.entity';
 import { AdminService } from './admin.service';
 import { ChangerMdpAdmin } from './dtos/changemdp.dto';
+import { AdminDto } from './dtos/admin.dto';
 
 @Controller('admin')
 export class AdminController {
 
-    constructor(private adminService: AdminService) {}
-    
+    constructor(private adminService: AdminService) { }
+
     @Get()
     async getAllAdmin(): Promise<Admin[]> {
         return this.adminService.getAll();
@@ -22,6 +23,10 @@ export class AdminController {
     @Post()
     async addNewAdmin(@Body() admin: Admin): Promise<Admin> {
         return this.adminService.addAdmin(admin);
+    }
+    @Put('/update')
+    async updateAdmin(@Body() Admin: AdminDto): Promise<Admin> {
+        return this.adminService.updateOne(Admin);
     }
 
     @Put()
