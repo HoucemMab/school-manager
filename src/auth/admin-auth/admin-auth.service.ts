@@ -16,11 +16,39 @@ export class AdminAuthService {
   constructor(
     @InjectRepository(Admin) private adminRepository: MongoRepository<Admin>,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
   async signUp(admin: Admin): Promise<Admin> {
     const hash = await argon.hash(admin.mdp);
     admin.mdp = hash;
+    const importing = admin.ImportExcel;
+    const demande = admin.OperationsDemande;
+    const ens = admin.OperationsEns;
+    const etud = admin.OperationsEtud;
+    const event = admin.OperationsEvent;
+    const stat = admin.OperationsStats;
+    const SuperAdmin = admin.SuperAdmin;
+    if (importing == undefined) {
+      admin.ImportExcel = true;
+    }
+    if (demande == undefined) {
+      admin.OperationsDemande = true;
+    }
+    if (ens == undefined) {
+      admin.OperationsEns = true;
+    }
+    if (etud == undefined) {
+      admin.OperationsEtud = true;
+    }
+    if (event == undefined) {
+      admin.OperationsEvent = true;
+    }
+    if (stat == undefined) {
+      admin.OperationsStats = true;
+    }
+    if (SuperAdmin == undefined) {
+      admin.SuperAdmin = false;
+    }
     admin.roles = [Role.Admin];
     return this.adminRepository.save(admin);
   }

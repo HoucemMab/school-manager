@@ -30,9 +30,9 @@ export class AssetService {
                     'nom', 'prenom',
                     'dateNaissance', 'formation',
                     'poste', 'visibilite',
-                    'niveau', 'classe',
+                    'niveau', 'Classe',
                     'anneeEdut', 'login',
-                    'mdp', 'EtudiantActId'
+                    'mdp', 'EtudiantActId', "email"
                 ]);
                 if (!areEqual) {
                     throw new HttpException("please verify your fields of the file", HttpStatus.BAD_REQUEST)
@@ -52,8 +52,9 @@ export class AssetService {
                         element.cv = null;
                         element.pfe = null;
                         element.stages = null;
-                        element.visibilite=Boolean(etudiantact[k].visibilite);
+                        element.visibilite = Boolean(etudiantact[k].visibilite);
                         element.login = element.login;
+                        element.Reussi = 0;
                         const hash = await argon.hash(element.mdp);
                         element.mdp = hash;
                         etudiant = element;

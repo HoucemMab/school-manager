@@ -4,7 +4,7 @@ import { Pfe } from "src/pfe/pfe.entity";
 import { StageEte } from "src/stage-ete/stageEte.entity";
 
 export class Etudiantacttoupdate {
-    _id:string;
+    _id: string;
     EtudiantActId: string;
     nom: string;
     prenom: string;
@@ -15,10 +15,12 @@ export class Etudiantacttoupdate {
     poste: string;
     visibilite: Boolean;
     anneEtudet: Number;
-    login:number;
+    login: number;
     email: string;
     mdp: string;
-    pfe:Pfe;
-    pfa:Pfa;
-    stages:StageEte[];
+    pfe: Pfe;
+    pfa: Pfa;
+    stages: StageEte[];
+    Reussi: Number;
+
 }

@@ -46,6 +46,7 @@ export class EtudiantActuelService {
     const hash = await argon.hash(EtudiantActuel.mdp);
     console.log('hash ==>', hash);
     EtudiantActuel.mdp = hash;
+    EtudiantActuel.Reussi = 0;
     console.log(' inserting ===>', EtudiantActuel);
     return await this.etudiantrepository.save(EtudiantActuel);
   }
@@ -70,6 +71,7 @@ export class EtudiantActuelService {
       toUpdate.niveau = EtudiantActuel.niveau;
       toUpdate.visibilite = EtudiantActuel.visibilite;
       toUpdate.anneEtudet = EtudiantActuel.anneEtudet;
+      toUpdate.Reussi = EtudiantActuel.Reussi;
 
       return await this.etudiantrepository.save(toUpdate);
     } else {
