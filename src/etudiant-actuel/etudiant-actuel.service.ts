@@ -44,7 +44,9 @@ export class EtudiantActuelService {
   }
   async insertOne(EtudiantActuel: EtudiantActuel): Promise<EtudiantActuel> {
     const hash = await argon.hash(EtudiantActuel.mdp);
+    console.log('hash ==>', hash);
     EtudiantActuel.mdp = hash;
+    console.log(' inserting ===>', EtudiantActuel);
     return await this.etudiantrepository.save(EtudiantActuel);
   }
   async updateOne(EtudiantActuel: Etudiantacttoupdate) {
@@ -63,7 +65,7 @@ export class EtudiantActuelService {
       toUpdate.stages = EtudiantActuel.stages;
       toUpdate.formation = EtudiantActuel.formation;
       toUpdate.email = EtudiantActuel.email;
-      toUpdate.mdp = EtudiantActuel.mdp;
+      // toUpdate.mdp = EtudiantActuel.mdp;
       toUpdate.poste = EtudiantActuel.poste;
       toUpdate.niveau = EtudiantActuel.niveau;
       toUpdate.visibilite = EtudiantActuel.visibilite;
@@ -89,7 +91,7 @@ export class EtudiantActuelService {
       throw new Error('Verify student Id');
     } else if (etudiant) {
       const stageCreated = await this.stageEteService.addStageEte(stage);
-      console.log(stageCreated);
+      console.log('From Service etudiantActuel', stageCreated);
       if (stageCreated) {
         etudiant.stages.push(stageCreated);
       } else {

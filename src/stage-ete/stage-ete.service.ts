@@ -18,7 +18,7 @@ export class StageEteService {
 
   async addStageEte(stage: StageEte): Promise<StageEte> {
     const stageCreated: StageEte = await this.stageRepo.save(stage);
-
+    console.log(stageCreated);
     return stageCreated;
   }
   async findAllStageEte(): Promise<StageEte[]> {

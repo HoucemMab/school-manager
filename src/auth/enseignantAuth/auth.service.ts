@@ -21,6 +21,7 @@ export class AuthService {
     // save the new hashed password
     createAuth.mdp = hash;
     createAuth.roles = [Role.Enseignant];
+    console.log(createAuth);
     return this.enseignantRepository.save(createAuth);
   }
   async signIn(signIndto: SingInUserDTO): Promise<{ access_token: string }> {
