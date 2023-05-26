@@ -52,6 +52,13 @@ export class EtudiantAlumniController {
     console.log(EtudiantAlumni);
     return this.EtudiantAlumni.insertOne(EtudiantAlumni);
   }
+  @Post('/insteraftersucess')
+  async addEtudalu(
+    @Body() EtudiantAlumni: EtudiantAlumni,
+  ): Promise<EtudiantAlumni> {
+    console.log(EtudiantAlumni);
+    return this.EtudiantAlumni.insertAfterSucess(EtudiantAlumni);
+  }
   @Post('/updateCv/:id')
   async addCv(@Param('id') id: string, @Body() cv: Cv) {
     return await this.EtudiantAlumni.updatecv(id, cv);

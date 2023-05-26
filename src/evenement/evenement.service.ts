@@ -18,7 +18,7 @@ export class EvenementService {
     @InjectRepository(Evenement)
     private evenementRepository: MongoRepository<Evenement>,
     private anneUniversitaireService: AnneuniversitaireService,
-  ) {}
+  ) { }
 
   async addEvenement(evenement: CreateEvenementDto): Promise<Evenement> {
     console.log(evenement.anneuniversitaireName);
@@ -28,6 +28,7 @@ export class EvenementService {
     console.log(anneUniversite);
     const event: Evenement = new Evenement();
     event.anneuniversitaire = anneUniversite;
+    event.idEvenement = evenement.idEvenement;
     event.dateEvenement = evenement.dateEvenement;
     event.description = evenement.description;
     event.nom = evenement.nom;
