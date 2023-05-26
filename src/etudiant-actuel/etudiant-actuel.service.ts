@@ -6,6 +6,7 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Etudiant } from 'src/etudiant/etudiant.entity';
@@ -39,6 +40,9 @@ export class EtudiantActuelService {
     const etudiant = await this.etudiantrepository.findOneBy({
       EtudiantActId: id,
     });
+    if (!etudiant) {
+      throw new NotFoundException('Etudiant not found');
+    }
     console.log('from find ', etudiant);
     return etudiant;
   }
@@ -106,10 +110,12 @@ export class EtudiantActuelService {
   }
 
   async addPFE(id: string, stage: Pfe) {
+    console.log(id);
     const etudiant = await this.findOne(id);
-    const enseignant: Enseignant =
-      await this.enseignantService.getEnseignantById(stage.idEnseignant);
-    if (!etudiant || !enseignant) {
+
+    // const enseignant: Enseignant =
+    //   await this.enseignantService.getEnseignantById(stage.idEnseignant);
+    if (!etudiant) {
       throw new Error('Vérifier les cordonnées saisie ! ');
     } else if (etudiant) {
       stage.idEtudiant = id;
@@ -122,6 +128,7 @@ export class EtudiantActuelService {
       }
 
       //(await etudiant).login=1234512345;
+      console.log('stage added');
       return this.updateOne(etudiant);
     }
   }

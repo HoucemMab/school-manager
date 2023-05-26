@@ -18,7 +18,7 @@ import { UpdateEnseignantDto } from './dtos/updateEnseignant.dto';
 @Controller('enseignant')
 export class EnseignantController {
   constructor(private enseignantService: EnseignantService) {}
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   @Get()
   async getAllEnseignant(): Promise<Enseignant[]> {
     return this.enseignantService.getAllEnseignant();
@@ -35,7 +35,9 @@ export class EnseignantController {
   }
 
   @Put()
-  async updateEnseignant(@Body() enseignant: UpdateEnseignantDto): Promise<Enseignant> {
+  async updateEnseignant(
+    @Body() enseignant: UpdateEnseignantDto,
+  ): Promise<Enseignant> {
     return this.enseignantService.updateEnseignant(enseignant);
   }
 

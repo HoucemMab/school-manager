@@ -58,7 +58,9 @@ export class EtudiantActuelController {
   }
   @Put('/update')
   async updateEtudact(@Body() updatestudent: Etudiantacttoupdate) {
-    return await this.etudiantactuel.updateOne(updatestudent);
+    const et = await this.etudiantactuel.updateOne(updatestudent);
+    console.log(et);
+    return et;
   }
   @Get('/notificatiotravail')
   async sendJobNotification() {

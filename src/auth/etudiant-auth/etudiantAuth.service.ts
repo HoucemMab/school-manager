@@ -70,12 +70,14 @@ export class EtudiantAuthService {
         console.log(etudiant.mdp);
         const passwordVerify = await argon.verify(etudiant.mdp, signInUser.mdp);
         if (passwordVerify) {
+          console.log('credentials are done');
           return this.signToken(
             etudiant.EtudiantActId,
             etudiant.mdp,
             etudiant.roles,
           );
         } else {
+          console.log('not found etudiant');
           throw new ForbiddenException('Invalid credentials ...');
         }
       }
