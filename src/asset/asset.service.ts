@@ -56,6 +56,8 @@ export class AssetService {
                         element.login = element.login;
                         element.Reussi = 0;
                         const hash = await argon.hash(element.mdp);
+                        console.log(element.mdp);
+                        
                         element.mdp = hash;
                         etudiant = element;
                         const test = await this.etudiantrepository.findOneBy({

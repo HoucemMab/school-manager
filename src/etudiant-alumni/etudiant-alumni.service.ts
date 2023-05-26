@@ -26,6 +26,9 @@ export class EtudiantAlumniService {
     EtudiantAlumni.mdp = hash;
     return await this.etudiantrepository.save(EtudiantAlumni);
   }
+  async insertAfterSucess(EtudiantAlumni: EtudiantAlumni): Promise<EtudiantAlumni> {
+    return await this.etudiantrepository.save(EtudiantAlumni);
+  }
   async updateOne(EtudiantAlumni: EtudiantAlumanitoupdate) {
     const toUpdate: EtudiantAlumni = await this.etudiantrepository.findOneBy({
       EtudiantAluId: EtudiantAlumni.EtudiantAluId,
