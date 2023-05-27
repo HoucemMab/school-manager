@@ -40,9 +40,6 @@ export class EtudiantActuelService {
     const etudiant = await this.etudiantrepository.findOneBy({
       EtudiantActId: id,
     });
-    if (!etudiant) {
-      throw new NotFoundException('Etudiant not found');
-    }
     console.log('from find ', etudiant);
     return etudiant;
   }
